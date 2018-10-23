@@ -8,7 +8,7 @@ services:
       dockerfile: $PWD/web/Dockerfile
     volumes:
       # For development only
-      - "$PWD/web:/app"
+      - $PWD/web/:/app/
     depends_on:
       - redis
 
@@ -21,6 +21,9 @@ services:
       - 5454:80
     depends_on:
       - flask
+    volumes:
+      # For development only
+      - $PWD/nginx/html/:/usr/share/nginx/html/
 
   redis:
     image: redis:5-alpine

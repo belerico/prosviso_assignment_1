@@ -26,4 +26,4 @@ Le richieste del client vengono prese in carico da Nginx che si occupa di reindi
 
 ### Note
 
-Allo stato attuale il provisioning è gestito da `docker-compose`. Per diversificare le tecnologie stiamo sviluppando una versione complementare che utilizza Kubernetes
+Allo stato attuale il provisioning è gestito da `docker-compose`. Per diversificare le tecnologie stiamo sviluppando una versione complementare che utilizza Kubernetes.
