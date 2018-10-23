@@ -1,16 +1,16 @@
 # Studenti
 
-    * Luca Brena, matricola: 808216
-    * Federico Belotti, matricola: 808708
+* Luca Brena, matricola: 808216
+* Federico Belotti, matricola: 808708
 
-## Tecnologie utilizzate
+# Tecnologie utilizzate
 
 * Containerization: Docker
 * Provisioning: Docker Compose / Kubernetes
 * CI: Gitlab CI
 * CD: Jenkins
 
-### Struttura progetto
+# Struttura progetto
 
 Abbiamo creato tre container Docker, contenenti:
 
