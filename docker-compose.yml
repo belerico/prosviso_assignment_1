@@ -1,0 +1,31 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  flask:
+    build:
+      context: $PWD/web
+      dockerfile: $PWD/web/Dockerfile
+    volumes:
+      # For development only
+      - "$PWD/web:/app"
+    depends_on:
+      - redis
+
+  nginx:
+    image: webapp-nginx
+    build:
+      context: $PWD/nginx
+      dockerfile: $PWD/nginx/Dockerfile
+    ports:
+      - 5454:80
+    depends_on:
+      - flask
+
+  redis:
+    image: redis:5-alpine
+    volumes:
+      - redis_data:/data
+
+volumes:  
+  redis_data:
