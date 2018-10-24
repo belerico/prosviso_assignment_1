@@ -1,7 +1,7 @@
 # Dockerfile-flask
 # We simply inherit the Python 3 image. This image does
 # not particularly care what OS runs underneath
-FROM python:3.7-alpine
+FROM python:alpine
 RUN set -e; \
 	apk add --no-cache --virtual .build-deps \
 		gcc \
@@ -15,8 +15,6 @@ ENV APP /app
 # from there from now on
 RUN mkdir $APP
 WORKDIR $APP
-# Expose the port uWSGI will listen on
-# EXPOSE 5000
 # Copy the requirements file in order to install
 # Python dependencies
 COPY requirements.txt .

@@ -1,5 +1,5 @@
 # Dockerfile-nginx
-FROM nginx:latest
+FROM nginx:alpine
 # Nginx will listen on this port
 EXPOSE 80
 # Remove the default config file that
