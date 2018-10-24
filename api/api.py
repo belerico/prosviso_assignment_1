@@ -3,32 +3,38 @@ from redis import StrictRedis
 from operator import itemgetter
 import logging
 
-application = Flask(__name__)
+webapp = Flask(__name__)
 db = StrictRedis(host='redis', port=6379, db=0)
 
-@application.before_first_request
+@webapp.before_first_request
 def setup_logging():
     logging.getLogger().setLevel(logging.INFO)
 
-@application.route("/greetings", methods=["POST"])
+@webapp.route("/greetings", methods=["POST"])
 def greetings():
         db.incr(request.form.get("username"))
         name = request.form.get("username")
         count = db.get(request.form.get("username"))
-        return render_template("index.html", name=name, count=count.decode('utf-8'))
+        return render_template("index.html", deleted=False, name=name, count=count.decode('utf-8'))
 
-@application.route("/api/all")
+@webapp.route("/api/all")
 def get_all():
         data = []
         for key in db.scan_iter():
                 data.append({'username': key.decode('utf-8'), 'count': db.get(key).decode('utf-8')})
         return jsonify(data)
 
+@webapp.route("/api/delete/<username>")
+def delete_user(username):
+        db.delete(username)
+        return render_template("index.html", deleted=True, name=username)
+
+
 def sort_by_count(d):
     '''a helper function for sorting'''
     return d['count']
 
-@application.route("/api/max")
+@webapp.route("/api/max")
 def get_max():
         data = []
         for key in db.scan_iter():
@@ -36,14 +42,14 @@ def get_max():
         logging.info(data)
         return sorted(data, key=sort_by_count)
 
-@application.route("/api/<username>")
+@webapp.route("/api/<username>")
 def get_count(username):
         if db.get(username) is None:
                 return jsonify(username="Key not found"), 404
         else:
                 return jsonify(username=username, count=db.get(username).decode('utf-8')), 200
 
-@application.route("/prova")
+@webapp.route("/prova")
 def prova():
         return "Prova"
    

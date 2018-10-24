@@ -4,11 +4,11 @@ version: '3'
 services:
   flask:
     build:
-      context: $PWD/web
-      dockerfile: $PWD/web/Dockerfile
+      context: $PWD/webapp/
+      dockerfile: $PWD/webapp/Dockerfile
     volumes:
       # For development only
-      - $PWD/web/:/app/
+      - $PWD/webapp/:/webapp/
     depends_on:
       - redis
 

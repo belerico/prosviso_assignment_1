@@ -5,7 +5,7 @@
 
 ### Descrizione progetto
 
-Il progetto consiste in un'applicazione web in cui, dato uno username, questa mostra quante volte tale username ha visitato la pagina.\n
+Il progetto consiste in un'applicazione web in cui, dato uno username, questa mostra quante volte tale username ha visitato la pagina. Vengono inoltre messe a disposizione delle semplici API per operare con i dati.
 
 ### Tecnologie utilizzate
 
@@ -16,13 +16,19 @@ Il progetto consiste in un'applicazione web in cui, dato uno username, questa mo
 
 ### Struttura progetto
 
-Abbiamo creato tre container Docker, contenenti:
+Abbiamo creato quattro container Docker, contenenti:
 
 * Nginx: reserve-proxy, load-balancer e fornitore di contenuti statici (html, css, js, ...)
 * uWSGI + Flask: uWSGI web server che ospita una semplice applicazione Flask
+* uWSGI + Flask API: web server che ospita una semplice API per operare con i dati
 * Redis: database key-value
 
-Le richieste del client vengono prese in carico da Nginx che si occupa di reindirizzarle o al web server uWSGI o, se è stato richiesto un contenuto statico, lo fornisce esso stesso.
+L'architettura è la seguente:
+
+* Nginx --> uWSGI + Flask --> Flask API --> Redis
+    |-----------------------------^
+
+Le richieste del client vengono prese in carico da Nginx che si occupa di reindirizzarle al web server uWSGI o all'API o, se è stato richiesto un contenuto statico, lo fornisce esso stesso.
 
 ### Note
 

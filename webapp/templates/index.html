@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <head>
+        <link href="/static/css/lib/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+        <script src="/static/js/lib/jquery-3.3.1.min.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div class="container" style="width: 60%">
+            <div>
+                <div style="width: 100%">
+                    <img src="/static/images/docker-flask.png" width="100%">
+                    <p>
+                        {% if deleted == True %}
+                            <h4 class="text-center">{{ name }} has been deleted!</h4>
+                            <p class="text-center">
+                                <a href="http://0.0.0.0:5454">Go back</a>
+                            </p>
+                        {% else %}
+                            <h4 class="text-center">Hello {{ name }}, you've visited this page {{ count }} times</h4>
+                            <p class="text-center">
+                                <a href="http://0.0.0.0:5454/api/delete/{{ name }}">Delete me!</a>
+                                <a href="http://0.0.0.0:5454">Go back</a>
+                            </p>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

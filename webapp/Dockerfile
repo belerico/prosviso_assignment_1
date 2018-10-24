@@ -9,12 +9,12 @@ RUN set -e; \
 		linux-headers \
 	;
 # Set an environment variable with the directory
-# where we'll be running the app
-ENV APP /app
+# where we'll be running the WEBAPP
+ENV WEBWEBAPP /webapp
 # Create the directory and instruct Docker to operate
 # from there from now on
-RUN mkdir $APP
-WORKDIR $APP
+RUN mkdir $WEBAPP
+WORKDIR $WEBAPP
 # Copy the requirements file in order to install
 # Python dependencies
 COPY requirements.txt .
@@ -29,4 +29,4 @@ COPY . .
 RUN addgroup -S uwsgi && adduser -S uwsgi -G uwsgi
 # Finally, we run uWSGI with the ini file we
 # created earlier
-CMD [ "uwsgi", "--ini", "wsgi.ini" ]
+CMD [ "uwsgi", "--ini", "webapp.ini" ]
