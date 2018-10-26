@@ -1,11 +1,13 @@
-from flaskr import flaskr
 import pytest
+import sys
 
+sys.path.insert(0, '/api/api.py')
+import flaskAPI
 
 @pytest.fixture
 def client():
-    flaskr.app.config['TESTING'] = True
-    client = flaskr.app.test_client()
+    flaskAPI.app.config['TESTING'] = True
+    client = flaskAPI.app.test_client()
     yield client
 
 def test_empty_db(client):
