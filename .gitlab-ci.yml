@@ -15,7 +15,8 @@ build:
 test:
     stage: test
     script:
-        - pip install -U pytest flaskr
+        - pip install --upgrade pip
+        - pip install pytest
         - pytest tests
 
   
