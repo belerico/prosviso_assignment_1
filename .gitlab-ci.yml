@@ -1,12 +1,13 @@
+image: tiangolo/docker-with-compose
+
 stages:
   - build
 
 services:
-  - gitlab/dind
+  - docker:dind
 
 build:
   stage: build
-  image: dind
   script: 
-    - echo "Build successful"
+    - docker-compose build
   
