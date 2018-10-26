@@ -8,24 +8,24 @@
     </head>
     <body>
         <div class="container" style="width: 60%">
-            <div>
-                <div style="width: 100%">
-                    <img src="/static/images/docker-flask.png" width="100%">
-                    <h3><a id="Studenti_0"></a>Studenti</h3>
+            <div style="width: 100%">
+                <img src="/static/images/docker-flask.png" width="100%">
+                <p>
+                    <h4><a id="Studenti_0"></a>Studenti</h4>
                     <ul>
                     <li>Luca Brena, matricola: 808216</li>
                     <li>Federico Belotti, matricola: 808708</li>
                     </ul>
-                    <h3><a id="Descrizione_progetto_5"></a>Descrizione progetto</h3>
+                    <h4><a id="Descrizione_progetto_5"></a>Descrizione progetto</h4>
                     <p>Il progetto consiste in un’applicazione web in cui, dato uno username, questa mostra quante volte tale username ha visitato la pagina. Vengono inoltre messe a disposizione delle semplici API per operare con i dati.</p>
-                    <h3><a id="Tecnologie_utilizzate_9"></a>Tecnologie utilizzate</h3>
+                    <h4><a id="Tecnologie_utilizzate_9"></a>Tecnologie utilizzate</h4>
                     <ul>
                     <li>Containerization: Docker</li>
                     <li>Provisioning: Docker Compose / Kubernetes</li>
                     <li>CI: Gitlab CI</li>
                     <li>CD: Jenkins</li>
                     </ul>
-                    <h3><a id="Struttura_progetto_16"></a>Struttura progetto</h3>
+                    <h4><a id="Struttura_progetto_16"></a>Struttura progetto</h4>
                     <p>Abbiamo creato quattro container Docker, contenenti:</p>
                     <ul>
                     <li>Nginx: reserve-proxy, load-balancer e fornitore di contenuti statici (html, css, js, …)</li>
@@ -38,10 +38,10 @@
                     <li>Nginx &lt;–&gt; uWSGI + Flask &lt;–&gt; Flask API &lt;–&gt; Redis</li>
                     </ul>
                     <p>Le richieste del client vengono prese in carico da Nginx che si occupa di reindirizzarle al web server uWSGI o all’API o, se è stato richiesto un contenuto statico, lo fornisce esso stesso.</p>
-                    <h3><a id="Note_31"></a>Note</h3>
+                    <h4><a id="Note_31"></a>Note</h4>
                     <p>Allo stato attuale il provisioning è gestito da <code>docker-compose</code>. Per diversificare le tecnologie stiamo sviluppando una versione complementare che utilizza Kubernetes.</p>
                     <a href="http://0.0.0.0">Go back</a>
-                </div>
+                </p>
             </div>
         </div>
     </body>

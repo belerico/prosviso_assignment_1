@@ -28,17 +28,17 @@
                     </ul>
                     <h4 id="descrizioneprogetto">Descrizione progetto</h4>
                     <p>Il progetto consiste in un'applicazione web in cui, dato uno username, questa mostra quante volte tale username ha visitato la pagina. <a href="http://0.0.0.0/about.html">Project info</a></p>   
+                    <form method="GET" action="http://0.0.0.0/greetings">
+                        <div class="input-group">
+                                <input name="username" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit">Send</button>
+                                    <button id="delete_all" class="btn btn-outline-secondary" type="button">Delete all</button>
+                                    <button id="show_all" class="btn btn-outline-secondary" type="button">Show all</button>
+                                </div>
+                        </div>
+                    </form>
                 </p>
-                <form method="GET" action="http://0.0.0.0/greetings">
-                    <div class="input-group">
-                            <input name="username" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="submit">Send</button>
-                                <button id="delete_all" class="btn btn-outline-secondary" type="button">Delete all</button>
-                                <button id="show_all" class="btn btn-outline-secondary" type="button">Show all</button>
-                            </div>
-                    </div>
-                </form>
             </div>
         </div>
     </body>

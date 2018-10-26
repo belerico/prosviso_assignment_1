@@ -12,8 +12,8 @@ def setup_logging():
 @webapp.route("/greetings", methods=["GET"])
 def greetings():
         username = request.args.get("username")
-        requests.post("http://api:7000/api/" + username)
-        r = requests.get("http://api:7000/api/" + username).json()
+        requests.post("http://api:7000/api/user/" + username)
+        r = requests.get("http://api:7000/api/user/" + username).json()
         return render_template('index.html', 
                                 text="Hello " + username + ", you\'ve visited this page " + r["count"] + " times", 
                                 delete_link=Markup('<a id="delete" href="http://0.0.0.0/delete?username=' + username + '">Delete me!</a>'))
@@ -21,7 +21,7 @@ def greetings():
 @webapp.route("/delete", methods=["GET"])
 def delete():
         username = request.args.get("username")
-        r = requests.delete("http://api:7000/api/" + username)
+        r = requests.delete("http://api:7000/api/user/" + username)
         if r.status_code == 200:
                 return render_template('index.html', 
                                         text="User " + username + " has been deleted", 
@@ -33,11 +33,11 @@ def delete():
 
 @webapp.route("/deleteall", methods=["GET"])
 def deleteall():
-        r = requests.delete("http://api:7000/api/all")
+        r = requests.delete("http://api:7000/api/users")
         if r.status_code == 200:
                 r = r.json()
                 return render_template('index.html', 
-                                        text=str(r["users_deleted"]) + " users has been deleted", 
+                                        text=str(r["deleted"]) + " users has been deleted", 
                                         delete_link="")
         elif r.status_code == 404:
                 return render_template('index.html', 
@@ -46,7 +46,7 @@ def deleteall():
    
 @webapp.route("/showall", methods=["GET"])
 def showall():
-        r = requests.get("http://api:7000/api/func/sort/desc").json()
+        r = requests.get("http://api:7000/api/users/sort/desc").json()
         if r:
                 table = ' \
                         <table class="table"> \
