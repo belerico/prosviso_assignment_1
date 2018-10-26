@@ -25,7 +25,8 @@ Abbiamo creato quattro container Docker, contenenti:
 
 L'architettura è la seguente:
 
-* Nginx --> uWSGI + Flask --> Flask API --> Redis\n
+* Nginx --> uWSGI + Flask --> Flask API --> Redis
+
     |-----------------------------^
 
 Le richieste del client vengono prese in carico da Nginx che si occupa di reindirizzarle al web server uWSGI o all'API o, se è stato richiesto un contenuto statico, lo fornisce esso stesso.
