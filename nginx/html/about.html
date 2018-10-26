@@ -11,32 +11,35 @@
             <div>
                 <div style="width: 100%">
                     <img src="/static/images/docker-flask.png" width="100%">
-                    <p>
-                        <h3 id="studenti">Studenti</h3>
-                        <ul>
-                            <li>Luca Brena, matricola: 808216</li>
-                            <li>Federico Belotti, matricola: 808708</li>
-                        </ul>
-                        <h3 id="descrizioneprogetto">Descrizione progetto</h3>
-                        <p>Il progetto consiste in un'applicazione web in cui, dato uno username, questa mostra quante volte tale username ha visitato la pagina.</p>
-                        <h3 id="tecnologieutilizzate">Tecnologie utilizzate</h3>
-                        <ul>
-                            <li>Containerization: Docker</li>
-                            <li>Provisioning: Docker Compose / Kubernetes</li>
-                            <li>CI: Gitlab CI</li>
-                            <li>CD: Jenkins</li>
-                        </ul>
-                        <h3 id="strutturaprogetto">Struttura progetto</h3>
-                        <p>Abbiamo creato tre container Docker, contenenti:</p>
-                        <ul>
-                            <li>Nginx: reserve-proxy, load-balancer e fornitore di contenuti statici (html, css, js, ...)</li>
-                            <li>uWSGI + Flask: uWSGI web server che ospita una semplice applicazione Flask</li>
-                            <li>Redis: database key-value</li>
-                        </ul>
-                        <p>Le richieste del client vengono prese in carico da Nginx che si occupa di reindirizzarle o al web server uWSGI o, se è stato richiesto un contenuto statico, lo fornisce esso stesso.</p>
-                        <h3 id="note">Note</h3>
-                        <p>Allo stato attuale il provisioning è gestito da <code>docker-compose</code>. Per diversificare le tecnologie stiamo sviluppando una versione complementare che utilizza Kubernetes.</p>
-                    </p>
+                    <h3><a id="Studenti_0"></a>Studenti</h3>
+                    <ul>
+                    <li>Luca Brena, matricola: 808216</li>
+                    <li>Federico Belotti, matricola: 808708</li>
+                    </ul>
+                    <h3><a id="Descrizione_progetto_5"></a>Descrizione progetto</h3>
+                    <p>Il progetto consiste in un’applicazione web in cui, dato uno username, questa mostra quante volte tale username ha visitato la pagina. Vengono inoltre messe a disposizione delle semplici API per operare con i dati.</p>
+                    <h3><a id="Tecnologie_utilizzate_9"></a>Tecnologie utilizzate</h3>
+                    <ul>
+                    <li>Containerization: Docker</li>
+                    <li>Provisioning: Docker Compose / Kubernetes</li>
+                    <li>CI: Gitlab CI</li>
+                    <li>CD: Jenkins</li>
+                    </ul>
+                    <h3><a id="Struttura_progetto_16"></a>Struttura progetto</h3>
+                    <p>Abbiamo creato quattro container Docker, contenenti:</p>
+                    <ul>
+                    <li>Nginx: reserve-proxy, load-balancer e fornitore di contenuti statici (html, css, js, …)</li>
+                    <li>uWSGI + Flask: uWSGI web server che ospita una semplice applicazione Flask</li>
+                    <li>uWSGI + Flask API: web server che ospita una semplice API per operare con i dati</li>
+                    <li>Redis: database key-value</li>
+                    </ul>
+                    <p>L’architettura è la seguente:</p>
+                    <ul>
+                    <li>Nginx &lt;–&gt; uWSGI + Flask &lt;–&gt; Flask API &lt;–&gt; Redis</li>
+                    </ul>
+                    <p>Le richieste del client vengono prese in carico da Nginx che si occupa di reindirizzarle al web server uWSGI o all’API o, se è stato richiesto un contenuto statico, lo fornisce esso stesso.</p>
+                    <h3><a id="Note_31"></a>Note</h3>
+                    <p>Allo stato attuale il provisioning è gestito da <code>docker-compose</code>. Per diversificare le tecnologie stiamo sviluppando una versione complementare che utilizza Kubernetes.</p>
                     <a href="http://0.0.0.0">Go back</a>
                 </div>
             </div>

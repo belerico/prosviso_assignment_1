@@ -13,13 +13,10 @@ RUN git clone https://github.com/requests/requests.git; \
 	cd requests; \
 	pip install -U pip; \
 	pip install .;
-# Set an environment variable with the directory
-# where we'll be running the WEBAPP
-ENV WEBAPP /webapp
-# Create the directory and instruct Docker to operate
+## Create the directory and instruct Docker to operate
 # from there from now on
-RUN mkdir $WEBAPP
-WORKDIR $WEBAPP
+RUN mkdir /webapp
+WORKDIR /webapp
 # Copy the requirements file in order to install
 # Python dependencies
 COPY requirements.txt .

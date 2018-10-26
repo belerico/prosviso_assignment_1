@@ -1,0 +1,12 @@
+stages:
+  - build
+
+services:
+  - gitlab/dind
+
+build:
+  stage: build
+  image: dind
+  script: 
+    - echo "Build successful"
+  

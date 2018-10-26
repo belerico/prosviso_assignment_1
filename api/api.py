@@ -13,17 +13,11 @@ def get_all_user():
                 data.append({'count':db.get(key).decode('utf-8'),'username':key.decode('utf-8')})
         return data
 
-def sort_json(data, type, key_func):
-        if (type == "desc"):
-                return sorted(data, key=key_func, reverse=True)
-        else:
-                return sorted(data, key=key_func)
-
 @flaskAPI.before_first_request
 def __setup_logging():
     logging.getLogger().setLevel(logging.INFO)
 
-class UserActions(Resource):
+class User(Resource):
         def get(self, username):
                 count = db.get(username)
                 if count is None:
@@ -41,22 +35,26 @@ class UserActions(Resource):
         def post(self, username):
                 return jsonify(db.incr(username))
 
-class AllUsersActions(Resource):
+class AllUser(Resource):
         def get(self):
                 data = get_all_user()
                 return jsonify(data)
       
         def delete(self):
-                if db.dbsize() == 0:
+                size = db.dbsize()
+                if size == 0:
                         abort(404)
                 else: 
                         for key in db.scan_iter():
                                 db.delete(key)
-                        return '', 200
+                        return jsonify({"users_deleted":size})
 
-class GetAllUsersSorted(Resource):
+class Sort(Resource):
         def get(self, type):
-                data = sort_json(get_all_user(), type, lambda x: (int(x['count']), x['username']))
+                if type == "desc":
+                        data = sorted(get_all_user(), key=lambda x: (-int(x['count']), x['username']))
+                elif type == "asc":
+                        data = sorted(get_all_user(), key=lambda x: (int(x['count']), x['username']))
                 return jsonify(data)
 
 class Func(Resource):
@@ -71,7 +69,12 @@ class Func(Resource):
                         min_tuples = [{"count":i["count"],"username":i["username"]} for i in data if i["count"]==min_tuple["count"]]
                         return jsonify(min_tuples)
 
-api.add_resource(UserActions, '/api/<username>')
-api.add_resource(AllUsersActions, '/api/all')
+class Size(Resource):
+        def get(self):
+                return jsonify({"size":db.dbsize()})
+
+api.add_resource(User, '/api/<username>')
+api.add_resource(AllUser, '/api/all')
+api.add_resource(Size, '/api/all/size')
 api.add_resource(Func, '/api/func/<type>')
-api.add_resource(GetAllUsersSorted, '/api/func/sort/<type>')
+api.add_resource(Sort, '/api/func/sort/<type>')

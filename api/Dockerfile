@@ -8,13 +8,10 @@ RUN set -e; \
 		libc-dev \
 		linux-headers \
 	;
-# Set an environment variable with the directory
-# where we'll be running the api
-ENV API /api
 # Create the directory and instruct Docker to operate
 # from there from now on
-RUN mkdir $API
-WORKDIR $API
+RUN mkdir /api
+WORKDIR /api
 # Copy the requirements file in order to install
 # Python dependencies
 COPY requirements.txt .

@@ -35,11 +35,46 @@ def delete():
 def deleteall():
         r = requests.delete("http://api:7000/api/all")
         if r.status_code == 200:
+                r = r.json()
                 return render_template('index.html', 
-                                        text="All users has been deleted", 
+                                        text=str(r["users_deleted"]) + " users has been deleted", 
                                         delete_link="")
         elif r.status_code == 404:
                 return render_template('index.html', 
                                         text="No user to delete", 
                                         delete_link="")
    
+@webapp.route("/showall", methods=["GET"])
+def showall():
+        r = requests.get("http://api:7000/api/func/sort/desc").json()
+        if r:
+                table = ' \
+                        <table class="table"> \
+                                <thead> \
+                                        <tr> \
+                                        <th scope="col">#</th> \
+                                        <th scope="col">User</th> \
+                                        <th scope="col">Visits</th> \
+                                        <th scope="col">Delete</th> \
+                                        </tr> \
+                                </thead> \
+                '
+                table_content = ''
+                for i, couple in enumerate(r):
+                        logging.info(couple)
+                        table_content += ' \
+                                <tr> \
+                                        <th scope="row">' + str(i) + '</th> \
+                                        <td>' + couple["username"] + '</td> \
+                                        <td>' + couple["count"] + '</td> \
+                                        <td><a href="http://0.0.0.0/delete?username=' + couple["username"] + '">Delete me!</a></td> \
+                                </tr> \
+                        '
+                table += table_content + '</table>'
+                return render_template('index.html', 
+                                        text=Markup(table), 
+                                        delete_link="")
+        else:
+                return render_template('index.html', 
+                                        text="No user to show", 
+                                        delete_link="")

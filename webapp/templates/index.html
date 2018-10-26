@@ -12,7 +12,7 @@
                 <div style="width: 100%">
                     <img src="/static/images/docker-flask.png" width="100%">
                     <p>
-                        <h4 class="text-center">{{ text }}</h4>
+                        <h6 class="text-center">{{ text|safe }}</h6>
                         <p class="text-center">
                             {{ delete_link|safe }}
                             <a href="http://0.0.0.0">Go back</a>
