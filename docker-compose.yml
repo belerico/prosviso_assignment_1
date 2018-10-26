@@ -2,6 +2,16 @@
 version: '3'
 
 services:
+  api:
+    build:
+      context: $PWD/api/
+      dockerfile: $PWD/api/Dockerfile
+    volumes:
+      # For development only
+      - $PWD/api/:/api/
+    depends_on:
+      - redis
+
   flask:
     build:
       context: $PWD/webapp/
@@ -10,17 +20,17 @@ services:
       # For development only
       - $PWD/webapp/:/webapp/
     depends_on:
-      - redis
+      - api
 
   nginx:
-    image: webapp-nginx
     build:
       context: $PWD/nginx
       dockerfile: $PWD/nginx/Dockerfile
     ports:
-      - 5454:80
+      - 80:80
     depends_on:
       - flask
+      - api
     volumes:
       # For development only
       - $PWD/nginx/html/:/usr/share/nginx/html/

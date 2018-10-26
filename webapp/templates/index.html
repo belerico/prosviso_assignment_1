@@ -12,18 +12,11 @@
                 <div style="width: 100%">
                     <img src="/static/images/docker-flask.png" width="100%">
                     <p>
-                        {% if deleted == True %}
-                            <h4 class="text-center">{{ name }} has been deleted!</h4>
-                            <p class="text-center">
-                                <a href="http://0.0.0.0:5454">Go back</a>
-                            </p>
-                        {% else %}
-                            <h4 class="text-center">Hello {{ name }}, you've visited this page {{ count }} times</h4>
-                            <p class="text-center">
-                                <a href="http://0.0.0.0:5454/api/delete/{{ name }}">Delete me!</a>
-                                <a href="http://0.0.0.0:5454">Go back</a>
-                            </p>
-                        {% endif %}
+                        <h4 class="text-center">{{ text }}</h4>
+                        <p class="text-center">
+                            {{ delete_link|safe }}
+                            <a href="http://0.0.0.0">Go back</a>
+                        </p>
                     </p>
                 </div>
             </div>

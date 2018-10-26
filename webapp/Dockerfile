@@ -4,13 +4,18 @@
 FROM python:alpine
 RUN set -e; \
 	apk add --no-cache --virtual .build-deps \
+		git \
 		gcc \
 		libc-dev \
 		linux-headers \
 	;
+RUN git clone https://github.com/requests/requests.git; \
+	cd requests; \
+	pip install -U pip; \
+	pip install .;
 # Set an environment variable with the directory
 # where we'll be running the WEBAPP
-ENV WEBWEBAPP /webapp
+ENV WEBAPP /webapp
 # Create the directory and instruct Docker to operate
 # from there from now on
 RUN mkdir $WEBAPP
@@ -19,7 +24,6 @@ WORKDIR $WEBAPP
 # Python dependencies
 COPY requirements.txt .
 # Install Python dependencies
-RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 # Delete .build-deps
 RUN apk del .build-deps;

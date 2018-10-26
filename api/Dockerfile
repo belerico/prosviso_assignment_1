@@ -13,7 +13,7 @@ RUN set -e; \
 ENV API /api
 # Create the directory and instruct Docker to operate
 # from there from now on
-RUN mkdir $api
+RUN mkdir $API
 WORKDIR $API
 # Copy the requirements file in order to install
 # Python dependencies
