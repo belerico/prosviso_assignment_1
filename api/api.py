@@ -71,13 +71,10 @@ class Func(Resource):
                                 min_tuple = min(data, key=lambda x: int(x['count']))
                                 min_tuples = [{"count":i["count"],"username":i["username"]} for i in data if i["count"]==min_tuple["count"]]
                                 return jsonify(min_tuples)
-                        elif function == "count":
-                                logging.info("COUNT")
-                                return jsonify({"count":db.dbsize()})
                         else: 
                                 abort(404)
                 else:       
-                        abort(404)
+                        return jsonify([])
 
 class Count(Resource):
         def get(self):
@@ -86,4 +83,5 @@ class Count(Resource):
 api.add_resource(User, '/api/user/<username>')
 api.add_resource(AllUser, '/api/users')
 api.add_resource(Func, '/api/users/<function>')
+api.add_resource(Count, '/api/users/count')
 api.add_resource(Sort, '/api/users/sort/<type>')
