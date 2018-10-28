@@ -31,3 +31,11 @@ def test_sort_users(client):
     exp = [{"count":"2","username":"b"},{"count":"1","username":"a"}]
     assert r == exp
 
+def test_sort_users_break(client):
+    client.post('/api/user/b')
+    client.post('/api/user/b')
+    client.post('/api/user/a')
+    client.post('/api/user/a')
+    r = client.get('/api/users/sort/desc').get_json()
+    exp = [{"count":"2","username":"a"},{"count":"1","username":"b"}]
+    assert r == exp
