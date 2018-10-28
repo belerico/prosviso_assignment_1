@@ -14,6 +14,9 @@ test:
         TESTING: "1"
         PYTHONDONTWRITEBYTECODE: "1"
     script:
+        - cd api
+        - pip install --upgrade pip
+        - pip install --user pytest
         - pytest -p no:cacheprovider tests
 
   
