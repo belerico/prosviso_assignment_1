@@ -1,2 +1,4 @@
 docker-compose.yml
 .vscode
+README.md
+__init__.py

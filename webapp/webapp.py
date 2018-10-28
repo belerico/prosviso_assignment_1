@@ -14,7 +14,8 @@ def greetings():
         requests.post("http://api:7000/api/user/" + username)
         r = requests.get("http://api:7000/api/user/" + username).json()
         return render_template('index.html', 
-                                text="Hello " + username + ", you\'ve visited this page " + r["count"] + " times", 
+                                delay=Markup("setTimeout(function(){ window.location.href = '/'; }, 5000);"),
+                                text="Hello " + username + ", you\'ve visited this page " + r["count"] + " times. You will be redirected in 5 seconds", 
                                 delete_link=Markup('<a id="delete" href="http://0.0.0.0/delete?username=' + username + '">Delete me!</a>'))
 
 @webapp.route("/delete", methods=["GET"])
@@ -23,10 +24,12 @@ def delete():
         r = requests.delete("http://api:7000/api/user/" + username)
         if r.status_code == 200:
                 return render_template('index.html', 
+                                        
                                         text="User " + username + " has been deleted", 
                                         delete_link="")
         elif r.status_code == 404:
                 return render_template('index.html', 
+                                        
                                         text="User " + username + " doesn\'t exist anymore", 
                                         delete_link="")
 
@@ -36,10 +39,12 @@ def deleteall():
         if r.status_code == 200:
                 r = r.json()
                 return render_template('index.html', 
+                                        
                                         text=str(r["deleted"]) + " users has been deleted", 
                                         delete_link="")
         elif r.status_code == 404:
                 return render_template('index.html', 
+                                        
                                         text="No user to delete", 
                                         delete_link="")
    
@@ -70,10 +75,12 @@ def showall():
                                 </tr> \
                         '
                 table += table_content + '</table>'
-                return render_template('index.html', 
+                return render_template('index.html',                                                         
+                                        
                                         text=Markup(table), 
                                         delete_link="")
         else:
                 return render_template('index.html', 
+                                        
                                         text="No user to show", 
                                         delete_link="")

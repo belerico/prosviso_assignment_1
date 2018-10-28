@@ -5,6 +5,13 @@
     <head>
         <link href="/static/css/lib/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
         <script src="/static/js/lib/jquery-3.3.1.min.js" type="text/javascript"></script>
+        <script>
+            {% if delay is defined %}
+                $(document).ready(function() {
+                    {{ delay|safe }}
+                });
+            {% endif %}
+        </script>
     </head>
     <body>
         <div class="container" style="width: 60%">
