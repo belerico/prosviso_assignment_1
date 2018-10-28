@@ -1,9 +1,8 @@
 import pytest
 import sys
 import os
-sys.path.append('pss_assignment_1')
-sys.path.append('pss_assignment_1/api')
-from pss_assignment_1.api import api
+sys.path.append(os.path.join(os.path.dirname(__file__), os.pardir, "api"))
+from api import api
 
 @pytest.fixture
 def client():
