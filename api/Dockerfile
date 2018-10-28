@@ -24,6 +24,7 @@ RUN apk del .build-deps;
 COPY . .
 # Run uwsgi unprivileged
 RUN addgroup -S uwsgi && adduser -S uwsgi -G uwsgi
+# ENV TESTING=0
 # Finally, we run uWSGI with the ini file we
 # created earlier
 CMD [ "uwsgi", "--ini", "api.ini" ]

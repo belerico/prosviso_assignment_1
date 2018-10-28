@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template, Markup
-from redis import StrictRedis
 import requests
 import logging
 

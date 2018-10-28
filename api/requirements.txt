@@ -2,3 +2,4 @@ flask
 uwsgi
 redis
 flask_restful
+pytest

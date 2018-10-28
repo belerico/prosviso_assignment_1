@@ -1,22 +1,26 @@
 image: tiangolo/docker-with-compose
 
 services:
-  - docker:dind
+    - docker:dind
 
 stages:
     - build
     - test
 
 build:
-  stage: build
-  script: 
-    - docker-compose build
+    stage: build
+    script: 
+        - docker-compose build
 
 test:
     stage: test
+    image: pss_assignment_1_api
+    services: 
+        - redis
+    variables:
+        - TESTING: 1
+        - PYTHONDONTWRITEBYTECODE: 1
     script:
-        - pip install --upgrade pip
-        - pip install pytest
-        - pytest tests
+        - pytest -p no:cacheprovider tests
 
   

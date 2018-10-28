@@ -3,6 +3,7 @@ version: '3'
 
 services:
   api:
+    container_name: webapp-api
     build:
       context: $PWD/api/
       dockerfile: $PWD/api/Dockerfile
@@ -13,6 +14,7 @@ services:
       - redis
 
   flask:
+    container_name: webapp-flask
     build:
       context: $PWD/webapp/
       dockerfile: $PWD/webapp/Dockerfile
@@ -23,6 +25,7 @@ services:
       - api
 
   nginx:
+    container_name: webapp-nginx
     build:
       context: $PWD/nginx
       dockerfile: $PWD/nginx/Dockerfile
@@ -36,9 +39,7 @@ services:
       - $PWD/nginx/html/:/usr/share/nginx/html/
 
   redis:
+    container_name: webapp-redis
     image: redis:alpine
     volumes:
       - redis_data:/data
-
-volumes:  
-  redis_data:

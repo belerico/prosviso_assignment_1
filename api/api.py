@@ -1,11 +1,16 @@
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, make_response, abort
 from flask_restful import Resource, Api
 from redis import StrictRedis
 import logging
+import os
 
 flaskAPI = Flask(__name__)
 api = Api(flaskAPI)
-db = StrictRedis(host='redis', port=6379, db=0)
+if os.environ["TESTING"] == "0":
+        db = StrictRedis(host='redis', port=6379, db=0)
+else:
+        api.app.config["TESTING"] = True
+        db = StrictRedis(host='redis', port=6379, db=1)
 
 def get_all_user():
         data = []
@@ -21,19 +26,19 @@ class User(Resource):
         def get(self, username):
                 count = db.get(username)
                 if count is None:
-                        abort(404)
+                        abort(make_response(jsonify(error="User " + username + " does not exist"), 404))
                 else:
-                        return jsonify({'count':count.decode('utf-8'),'username':username})
+                        return jsonify(count=count.decode('utf-8'),username=username)
         
         def delete(self, username):
                 deleted = db.delete(username)
                 if deleted == 0:
-                        abort(404)
+                        abort(make_response(jsonify(error="User " + username + " does not exist"), 404))
                 else:
                         return '', 200  
         
         def post(self, username):
-                return jsonify(db.incr(username))
+                return jsonify(count=db.incr(username),username=username)
 
 class AllUser(Resource):
         def get(self):
@@ -43,11 +48,11 @@ class AllUser(Resource):
         def delete(self):
                 size = db.dbsize()
                 if size == 0:
-                        abort(404)
+                        abort(make_response(jsonify(error="There're no users to delete"), 404))
                 else: 
                         for key in db.scan_iter():
                                 db.delete(key)
-                        return jsonify({"deleted":size})
+                        return jsonify(deleted=size)
 
 class Sort(Resource):
         def get(self, type):
@@ -78,7 +83,7 @@ class Func(Resource):
 
 class Count(Resource):
         def get(self):
-                return jsonify({"count":db.dbsize()})
+                return jsonify(count=db.dbsize())
 
 api.add_resource(User, '/api/user/<username>')
 api.add_resource(AllUser, '/api/users')
