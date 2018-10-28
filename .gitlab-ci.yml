@@ -18,8 +18,8 @@ test:
     services: 
         - redis
     variables:
-        - TESTING: 1
-        - PYTHONDONTWRITEBYTECODE: 1
+        TESTING: "1"
+        PYTHONDONTWRITEBYTECODE: "1"
     script:
         - pytest -p no:cacheprovider tests
 
