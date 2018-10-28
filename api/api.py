@@ -1,16 +1,11 @@
 from flask import Flask, request, jsonify, make_response, abort
 from flask_restful import Resource, Api
 from redis import StrictRedis
-import logging
-import os
+# import logging
 
 flaskAPI = Flask(__name__)
 api = Api(flaskAPI)
-if os.environ["TESTING"] == "0":
-        db = StrictRedis(host='redis', port=6379, db=0)
-else:
-        api.app.config["TESTING"] = True
-        db = StrictRedis(host='redis', port=6379, db=1)
+db = StrictRedis(host='redis', port=6379, db=0)
 
 def get_all_user():
         data = []
@@ -18,9 +13,9 @@ def get_all_user():
                 data.append({'count':db.get(key).decode('utf-8'),'username':key.decode('utf-8')})
         return data
 
-@flaskAPI.before_first_request
-def __setup_logging():
-    logging.getLogger().setLevel(logging.INFO)
+# @flaskAPI.before_first_request
+# def __setup_logging():
+#     logging.getLogger().setLevel(logging.INFO)
 
 class User(Resource):
         def get(self, username):

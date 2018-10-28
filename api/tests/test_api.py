@@ -6,6 +6,7 @@ from api import api
 
 @pytest.fixture
 def client():
+    api.app.config["TESTING"] = True
     client = api.app.test_client()
     yield client
 
