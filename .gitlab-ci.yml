@@ -13,7 +13,7 @@ test:
     script:
         - cd api
         - pip install --upgrade pip
-        - pip install flask flask_restful pytest
+        - pip install flask flask_restful redis pytest
         - pytest -p no:cacheprovider tests
 
   
