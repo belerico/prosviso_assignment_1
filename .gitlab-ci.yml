@@ -10,13 +10,10 @@ test:
     stage: test
     services: 
         - redis
-    variables:
-        TESTING: "1"
-        PYTHONDONTWRITEBYTECODE: "1"
     script:
         - cd api
         - pip install --upgrade pip
-        - pip install pytest
+        - pip install flask flask_restful pytest
         - pytest -p no:cacheprovider tests
 
   
