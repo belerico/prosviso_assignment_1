@@ -11,13 +11,13 @@ services:
     - docker:dind
 
 stages:
-    - build
+    # - build
     - test
 
-build:
-    stage: build
-    script:
-        - docker-compose build
+# build:
+#     stage: build
+#     script:
+#         - docker-compose build
 
 test:
     stage: test
@@ -28,6 +28,7 @@ test:
         - pip install --upgrade pip
         - pip install flask flask_restful redis pytest
         - pytest -p no:cacheprovider tests
+        - docker info
         - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_REGISTRY
         - docker build -t $DOCKER_WEBAPP_IMAGE ./webapp
         - docker build -t $DOCKER_API_IMAGE ./api
