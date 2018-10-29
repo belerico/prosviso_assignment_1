@@ -11,8 +11,7 @@ Il progetto consiste in un'applicazione web in cui, dato uno username, questa mo
 
 * Containerization: Docker
 * Provisioning: Docker Compose / Kubernetes
-* CI: Gitlab CI
-* CD: Jenkins
+* CI/CD: Gitlab CI
 
 ### Struttura progetto
 

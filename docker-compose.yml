@@ -7,9 +7,9 @@ services:
     build:
       context: $PWD/api/
       dockerfile: $PWD/api/Dockerfile
-    volumes:
+    # volumes:
       # For development only
-      - $PWD/api/:/api/
+      # - $PWD/api/:/api/
     depends_on:
       - redis
 
@@ -18,9 +18,9 @@ services:
     build:
       context: $PWD/webapp/
       dockerfile: $PWD/webapp/Dockerfile
-    volumes:
+    # volumes:
       # For development only
-      - $PWD/webapp/:/webapp/
+      # - $PWD/webapp/:/webapp/
     depends_on:
       - api
 
@@ -34,9 +34,9 @@ services:
     depends_on:
       - flask
       - api
-    volumes:
+    # volumes:
       # For development only
-      - $PWD/nginx/html/:/usr/share/nginx/html/
+      # - $PWD/nginx/html/:/usr/share/nginx/html/
 
   redis:
     container_name: webapp-redis
