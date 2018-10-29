@@ -1,7 +1,7 @@
 # Dockerfile-flask
 # We simply inherit the Python 3 image. This image does
 # not particularly care what OS runs underneath
-FROM python:alpine
+FROM python:3.7-alpine
 RUN set -e; \
 	apk add --no-cache --virtual .build-deps \
 		gcc \

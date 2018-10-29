@@ -11,24 +11,24 @@ services:
     - docker:dind
 
 stages:
-    # - build
-    # - test
+    - build
+    - test
     - push
 
-# build:
-#     stage: build
-#     script:
-#         - docker-compose build
+build:
+    stage: build
+    script:
+        - docker-compose build
 
-# test:
-#     stage: test
-#     services: 
-#         - redis
-#     script:
-#         - cd api
-#         - pip install --upgrade pip
-#         - pip install flask flask_restful redis pytest
-#         - pytest -p no:cacheprovider tests
+test:
+    stage: test
+    services: 
+        - redis
+    script:
+        - cd api
+        - pip install --upgrade pip
+        - pip install flask flask_restful redis pytest
+        - pytest -p no:cacheprovider tests
 
 push:
     stage: push

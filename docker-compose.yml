@@ -3,6 +3,7 @@ version: '3'
 
 services:
   api:
+    image: webapp-api
     container_name: webapp-api
     build:
       context: $PWD/api/
@@ -14,6 +15,7 @@ services:
       - redis
 
   flask:
+    image: webapp-flask
     container_name: webapp-flask
     build:
       context: $PWD/webapp/
@@ -25,6 +27,7 @@ services:
       - api
 
   nginx:
+    image: webapp-nginx
     container_name: webapp-nginx
     build:
       context: $PWD/nginx
