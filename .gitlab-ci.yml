@@ -12,31 +12,35 @@ services:
 
 stages:
     # - build
-    - test
+    # - test
+    - push
 
 # build:
 #     stage: build
 #     script:
 #         - docker-compose build
 
-test:
-    stage: test
+# test:
+#     stage: test
+#     services: 
+#         - redis
+#     script:
+#         - cd api
+#         - pip install --upgrade pip
+#         - pip install flask flask_restful redis pytest
+#         - pytest -p no:cacheprovider tests
+
+push:
+    stage: push
     services: 
         - docker:dind
-        - redis
     script:
-        - cd api
-        - pip install --upgrade pip
-        - pip install flask flask_restful redis pytest
-        - pytest -p no:cacheprovider tests
-        - docker info
         - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_REGISTRY
-        - docker build -t $DOCKER_WEBAPP_IMAGE ./webapp
-        - docker build -t $DOCKER_API_IMAGE ./api
-        - docker build -t $DOCKER_NGINX_IMAGE ./nginx
+        - docker build -t $DOCKER_WEBAPP_IMAGE webapp/
+        - docker build -t $DOCKER_API_IMAGE api/
+        - docker build -t $DOCKER_NGINX_IMAGE nginx/
         - docker push $DOCKER_WEBAPP_IMAGE
         - docker push $DOCKER_API_IMAGE
         - docker push $DOCKER_NGINX_IMAGE
-
 
   
