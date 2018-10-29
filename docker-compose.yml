@@ -18,11 +18,11 @@ services:
     image: webapp-flask
     container_name: webapp-flask
     build:
-      context: $PWD/webapp/
-      dockerfile: $PWD/webapp/Dockerfile
+      context: $PWD/flask/
+      dockerfile: $PWD/flask/Dockerfile
     # volumes:
       # For development only
-      # - $PWD/webapp/:/webapp/
+      # - $PWD/flask/:/flask/
     depends_on:
       - api
 

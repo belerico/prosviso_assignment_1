@@ -2,7 +2,7 @@ image: tiangolo/docker-with-compose
 
 variables:
     DOCKER_REGISTRY: registry.gitlab.com
-    DOCKER_WEBAPP_IMAGE: registry.gitlab.com/lucabrena/pss_assignment_1/webapp
+    DOCKER_FLASK_IMAGE: registry.gitlab.com/lucabrena/pss_assignment_1/flask
     DOCKER_API_IMAGE: registry.gitlab.com/lucabrena/pss_assignment_1/api
     DOCKER_NGINX_IMAGE: registry.gitlab.com/lucabrena/pss_assignment_1/nginx
 
@@ -36,10 +36,10 @@ push:
         - docker:dind
     script:
         - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_REGISTRY
-        - docker build -t $DOCKER_WEBAPP_IMAGE webapp/
+        - docker build -t $DOCKER_FLASK_IMAGE flask/
         - docker build -t $DOCKER_API_IMAGE api/
         - docker build -t $DOCKER_NGINX_IMAGE nginx/
-        - docker push $DOCKER_WEBAPP_IMAGE
+        - docker push $DOCKER_FLASK_IMAGE
         - docker push $DOCKER_API_IMAGE
         - docker push $DOCKER_NGINX_IMAGE
 

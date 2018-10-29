@@ -15,8 +15,8 @@ RUN git clone https://github.com/requests/requests.git; \
 	pip install .;
 ## Create the directory and instruct Docker to operate
 # from there from now on
-RUN mkdir /webapp
-WORKDIR /webapp
+RUN mkdir /flask
+WORKDIR /flask
 # Copy the requirements file in order to install
 # Python dependencies
 COPY requirements.txt .
