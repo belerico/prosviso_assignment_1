@@ -22,7 +22,7 @@ stages:
 test:
     stage: test
     services: 
-        - docker
+        - docker:dind
         - redis
     script:
         - cd api
