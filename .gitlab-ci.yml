@@ -1,4 +1,4 @@
-image: tiangolo/docker-with-compose
+image: docker:latest
 
 variables:
     DOCKER_REGISTRY: registry.gitlab.com
@@ -7,25 +7,26 @@ variables:
     DOCKER_NGINX_IMAGE: registry.gitlab.com/lucabrena/pss_assignment_1/nginx
 
 
-services:
-    - docker:dind
-
 stages:
     - build
     - test
     - push
 
-cache:
-  paths:
-    - images/
-
 build:
     stage: build
     script:
-        - docker-compose build
-    artifacts:
-        paths:
-            - images/
+        - docker build\
+            --cache-from api:latest\
+            --tag api:$CI_BUILD_REF\
+            --tag api:latest\
+        - docker build\
+            --cache-from flask:latest\
+            --tag flask:$CI_BUILD_REF\
+            --tag flask:latest\
+        - docker build\
+            --cache-from nginx:latest\
+            --tag nginx:$CI_BUILD_REF\
+            --tag nginx:latest\
 
 test:
     stage: test
@@ -39,16 +40,14 @@ test:
 
 push:
     stage: push
-    services: 
-        - docker:dind
     script:
         - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_REGISTRY
         # - docker build -t $DOCKER_FLASK_IMAGE flask/
         # - docker build -t $DOCKER_API_IMAGE api/
         # - docker build -t $DOCKER_NGINX_IMAGE nginx/
-        - docker push webapp-nginx
-        - docker push webapp-flask
-        - docker push webapp-api
+        - docker push nginx
+        - docker push flask
+        - docker push api
 
 
 
