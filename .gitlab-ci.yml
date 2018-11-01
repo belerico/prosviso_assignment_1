@@ -15,10 +15,17 @@ stages:
     - test
     - push
 
+cache:
+  paths:
+    - images/
+
 build:
     stage: build
     script:
         - docker-compose build
+    artifacts:
+        paths:
+            - images/
 
 test:
     stage: test
@@ -36,12 +43,12 @@ push:
         - docker:dind
     script:
         - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_REGISTRY
-        - docker build -t $DOCKER_FLASK_IMAGE flask/
-        - docker build -t $DOCKER_API_IMAGE api/
-        - docker build -t $DOCKER_NGINX_IMAGE nginx/
-        - docker push $DOCKER_FLASK_IMAGE
-        - docker push $DOCKER_API_IMAGE
-        - docker push $DOCKER_NGINX_IMAGE
+        # - docker build -t $DOCKER_FLASK_IMAGE flask/
+        # - docker build -t $DOCKER_API_IMAGE api/
+        # - docker build -t $DOCKER_NGINX_IMAGE nginx/
+        - docker push webapp-nginx
+        - docker push webapp-flask
+        - docker push webapp-api
 
 
 
