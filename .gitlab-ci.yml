@@ -21,9 +21,9 @@ cache:
 build:
     stage: build
     script:
-        - docker build --cache-from api:latest --tag api:$CI_BUILD_REF --tag api:latest\
-        - docker build --cache-from flask:latest --tag flask:$CI_BUILD_REF --tag flask:latest\
-        - docker build --cache-from nginx:latest --tag nginx:$CI_BUILD_REF --tag nginx:latest\
+        - docker build --cache-from $DOCKER_API_IMAGE:latest --tag $DOCKER_API_IMAGE:$CI_BUILD_REF --tag $DOCKER_API_IMAGE:latest
+        - docker build --cache-from $DOCKER_FLASK_IMAGE:latest --tag $DOCKER_FLASK_IMAGE:$CI_BUILD_REF --tag $DOCKER_FLASK_IMAGE:latest
+        - docker build --cache-from $DOCKER_NGINX_IMAGE:latest --tag $DOCKER_NGINX_IMAGE:$CI_BUILD_REF --tag $DOCKER_NGINX_IMAGE:latest
 
 test:
     stage: test
