@@ -13,10 +13,6 @@ stages:
     # - test
     # - push
 
-cache:
-  paths:
-    - images/
-
 build:
     stage: build
     script:
