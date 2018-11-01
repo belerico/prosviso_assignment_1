@@ -1,0 +1,12 @@
+# This service looks for all pods with the "redis-pod" tag, and creates a Service on port 6379 that targets port 6379 on the Redis pods
+apiVersion: v1
+kind: Service
+metadata:
+    name: redis
+spec:
+    type: ClusterIP
+    selector:
+        app: redis-pod
+    ports:
+      - port: 6379
+        targetPort: 6379

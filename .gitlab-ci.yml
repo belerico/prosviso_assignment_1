@@ -43,4 +43,6 @@ push:
         - docker push $DOCKER_API_IMAGE
         - docker push $DOCKER_NGINX_IMAGE
 
+
+
   

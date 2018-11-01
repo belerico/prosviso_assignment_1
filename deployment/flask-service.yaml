@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: flask
+spec:
+  type: ClusterIP
+  selector:
+    app: flask-pod
+  ports:
+    - name: http-flask
+      port: 5000
+      targetPort: 5000
+      protocol: TCP
+

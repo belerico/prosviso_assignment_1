@@ -1,0 +1,22 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  # Unique key of the Deployment instance
+  name: flask-deployment
+spec:
+  # 1 Pod should exist at all times.
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        # Apply this label to pods and default
+        # the Deployment label selector to this value
+        app: flask-pod
+    spec:
+      containers:
+        - name: flask-container
+          image: webapp-flask:kuber
+          ports:
+            - name: http-flask
+              containerPort: 5000
+

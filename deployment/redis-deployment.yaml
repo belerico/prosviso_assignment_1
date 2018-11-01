@@ -1,0 +1,29 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  # Unique key of the Deployment instance
+  name: redis-deployment
+spec:
+  # 1 Pod should exist at all times.
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        # Apply this label to pods and default
+        # the Deployment label selector to this value
+        app: redis-pod
+    spec:
+      containers:
+        - name: redis-container
+          image: redis
+          ports:
+            - name: redis-port
+              containerPort: 6379
+              hostPort: 63790
+          volumeMounts:
+            - mountPath: /data
+              name: redis-data
+      volumes:
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: redis-data

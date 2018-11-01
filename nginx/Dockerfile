@@ -7,5 +7,5 @@ EXPOSE 80
 RUN rm /etc/nginx/conf.d/default.conf
 # We copy the requirements file in order to install
 # Python dependencies
-COPY wsgi.conf /etc/nginx/conf.d/
+COPY webapp.conf /etc/nginx/conf.d/
 COPY html/ /usr/share/nginx/html

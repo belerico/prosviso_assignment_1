@@ -1,0 +1,20 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  # Unique key of the Deployment instance
+  name: nginx-deployment
+spec:
+  # 1 Pod should exist at all times.
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        # Apply this label to pods and default
+        # the Deployment label selector to this value
+        app: nginx-pod
+    spec:
+      containers:
+        - name: nginx-container
+          image: webapp-nginx:kuber
+          ports:
+            - containerPort: 80

@@ -16,7 +16,7 @@ def greetings():
         return render_template('index.html', 
                                 delay=Markup("setTimeout(function(){ window.location.href = '/'; }, 10000);"),
                                 text="Hello " + username + ", you\'ve visited this page " + r["count"] + " times. You will eventually be redirected in 10 seconds", 
-                                delete_link=Markup('<a id="delete" href="http://0.0.0.0/delete?username=' + username + '">Delete me!</a>'))
+                                delete_link=Markup('<a id="delete" href="/delete?username=' + username + '">Delete me!</a>'))
 
 @webapp.route("/delete", methods=["GET"])
 def delete():
@@ -43,6 +43,41 @@ def deleteall():
                 return render_template('index.html',                              
                                         text="No user to delete", 
                                         delete_link="")
+
+@webapp.route("/maxcounts", methods=["GET"])
+def maxcounts():
+        r = requests.get("http://api:7000/api/users/max").json()
+        if r:
+                table = ' \
+                        <table class="table"> \
+                                <thead> \
+                                        <tr> \
+                                        <th scope="col">#</th> \
+                                        <th scope="col">User</th> \
+                                        <th scope="col">Visits</th> \
+                                        <th scope="col">Delete</th> \
+                                        </tr> \
+                                </thead> \
+                '
+                table_content = ''
+                for i, couple in enumerate(r):
+                        logging.info(couple)
+                        table_content += ' \
+                                <tr> \
+                                        <th scope="row">' + str(i) + '</th> \
+                                        <td>' + couple["username"] + '</td> \
+                                        <td>' + couple["count"] + '</td> \
+                                        <td><a href="/delete?username=' + couple["username"] + '">Delete me!</a></td> \
+                                </tr> \
+                        '
+                table += table_content + '</table>'
+                return render_template('index.html',                                                                                             
+                        text=Markup(table), 
+                        delete_link="")
+        else:
+                return render_template('index.html',                              
+                                        text="No user to show", 
+                                        delete_link="")
    
 @webapp.route("/showall", methods=["GET"])
 def showall():
@@ -67,7 +102,7 @@ def showall():
                                         <th scope="row">' + str(i) + '</th> \
                                         <td>' + couple["username"] + '</td> \
                                         <td>' + couple["count"] + '</td> \
-                                        <td><a href="http://0.0.0.0/delete?username=' + couple["username"] + '">Delete me!</a></td> \
+                                        <td><a href="/delete?username=' + couple["username"] + '">Delete me!</a></td> \
                                 </tr> \
                         '
                 table += table_content + '</table>'
