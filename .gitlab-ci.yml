@@ -1,4 +1,4 @@
-image: docker:latest
+image: tiangolo/docker-with-compose:latest
 
 variables:
     DOCKER_REGISTRY: registry.gitlab.com
@@ -41,12 +41,13 @@ push:
         - docker:dind
     script:
         - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_REGISTRY
-        # - docker build -t $DOCKER_FLASK_IMAGE flask/
-        # - docker build -t $DOCKER_API_IMAGE api/
-        # - docker build -t $DOCKER_NGINX_IMAGE nginx/
-        - docker push nginx
-        - docker push flask
-        - docker push api
+        - docker push $DOCKER_FLASK_IMAGE:latest
+        - docker push $DOCKER_API_IMAGE:latest
+        - docker push $DOCKER_NGINX_IMAGE:latest
+
+
+
+  
 
 
 
