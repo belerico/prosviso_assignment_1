@@ -1,12 +1,16 @@
 image: tiangolo/docker-with-compose:latest
 
 variables:
-    DOCKER_FLASK_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/flask:latest
-    DOCKER_API_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/api:latest
-    DOCKER_NGINX_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/nginx:latest
+    DOCKER_FLASK_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/flask
+    DOCKER_API_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/api
+    DOCKER_NGINX_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/nginx
+    DOCKER_DRIVER: overlay2
 
 services:
     - docker:dind
+
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
 
 stages:
     - build
@@ -16,15 +20,15 @@ stages:
 build:
     stage: build
     script:
-        - docker pull $DOCKER_FLASK_IMAGE || true
-        - docker pull $DOCKER_NGINX_IMAGE || true
-        - docker pull $DOCKER_API_IMAGE || true
+        - docker pull $DOCKER_FLASK_IMAGE:latest || true
+        - docker pull $DOCKER_NGINX_IMAGE:latest || true
+        - docker pull $DOCKER_API_IMAGE:latest || true
         # - docker build --cache-from $CONTAINER_IMAGE:latest --tag $CONTAINER_IMAGE:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE:latest .
         # - docker push $CONTAINER_IMAGE:$CI_COMMIT_SHA
         # - docker push $CONTAINER_IMAGE:latest
-        # - docker build --cache-from $DOCKER_API_IMAGE:latest --tag $DOCKER_API_IMAGE:$CI_BUILD_REF --tag $DOCKER_API_IMAGE:latest api/
-        # - docker build --cache-from $DOCKER_FLASK_IMAGE:latest --tag $DOCKER_FLASK_IMAGE:$CI_BUILD_REF --tag $DOCKER_FLASK_IMAGE:latest flask/
-        # - docker build --cache-from $DOCKER_NGINX_IMAGE:latest --tag $DOCKER_NGINX_IMAGE:$CI_BUILD_REF --tag $DOCKER_NGINX_IMAGE:latest nginx/
+        - docker build --cache-from $DOCKER_API_IMAGE:latest --tag $DOCKER_API_IMAGE:$CI_BUILD_REF --tag $DOCKER_API_IMAGE:latest api/
+        - docker build --cache-from $DOCKER_FLASK_IMAGE:latest --tag $DOCKER_FLASK_IMAGE:$CI_BUILD_REF --tag $DOCKER_FLASK_IMAGE:latest flask/
+        - docker build --cache-from $DOCKER_NGINX_IMAGE:latest --tag $DOCKER_NGINX_IMAGE:$CI_BUILD_REF --tag $DOCKER_NGINX_IMAGE:latest nginx/
 
 # test:
 #     stage: test
