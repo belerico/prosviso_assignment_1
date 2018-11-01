@@ -1,9 +1,12 @@
 image: tiangolo/docker-with-compose:latest
 
 variables:
-    DOCKER_FLASK_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/flask
-    DOCKER_API_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/api
-    DOCKER_NGINX_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/nginx
+    FLASK_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/flask:latest
+    API_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/api:latest
+    NGINX_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/nginx:latest
+    FLASK_TEST_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/flask:$CI_COMMIT_REF_SLUG
+    API_TEST_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/api:$CI_COMMIT_REF_SLUG
+    NGINX_TEST_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/nginx:$CI_COMMIT_REF_SLUG
     DOCKER_DRIVER: overlay2
 
 services:
@@ -14,44 +17,44 @@ before_script:
 
 stages:
     - build
-    # - test
+    - test
     - push
 
 build:
     stage: build
     script:
-        - docker pull $DOCKER_FLASK_IMAGE:latest || true
-    #     - docker pull $DOCKER_NGINX_IMAGE:latest || true
-    #     - docker pull $DOCKER_API_IMAGE:latest || true
-    #     - docker build --cache-from $DOCKER_API_IMAGE:latest -t $DOCKER_API_IMAGE:latest api/
-        - docker build --cache-from $DOCKER_FLASK_IMAGE:latest -t $DOCKER_FLASK_IMAGE:prova flask/
-    #     - docker build --cache-from $DOCKER_NGINX_IMAGE:latest -t $DOCKER_NGINX_IMAGE:latest nginx/
-    artifacts:
-        paths:
-        - /var/lib/docker
-    
-# test:
-#     stage: test
-#     services: 
-#         - redis
-#     script:
-#         - cd api
-#         - pip install --upgrade pip
-#         - pip install flask flask_restful redis pytest
-#         - pytest -p no:cacheprovider tests
+        - docker pull FLASK_IMAGE || true
+        - docker pull NGINX_IMAGE || true
+        - docker pull API_IMAGE || true
+        - docker build --cache-from API_IMAGE -t API_TEST_IMAGE api/
+        - docker build --cache-from FLASK_IMAGE -t FLASK_TEST_IMAGE flask/
+        - docker build --cache-from NGINX_IMAGE -t NGINX_TEST_IMAGE nginx/
+        - docker push API_TEST_IMAGE
+        - docker push FLASK_TEST_IMAGE
+        - docker push NGINX_TEST_IMAGE
+
+test:
+    stage: test
+    services: 
+        - redis
+    script:
+        - cd api
+        - pip install --upgrade pip
+        - pip install flask flask_restful redis pytest
+        - pytest -p no:cacheprovider tests
 
 push:
     stage: push
     script:
-        # - docker pull $DOCKER_FLASK_IMAGE:latest || true
-        # - docker pull $DOCKER_NGINX_IMAGE:latest || true
-        # - docker pull $DOCKER_API_IMAGE:latest || true
-        # - docker build --cache-from $DOCKER_API_IMAGE:latest -t $DOCKER_API_IMAGE:latest api/
-        # - docker build --cache-from $DOCKER_FLASK_IMAGE:latest -t $DOCKER_FLASK_IMAGE:latest flask/
-        # - docker build --cache-from $DOCKER_NGINX_IMAGE:latest -t $DOCKER_NGINX_IMAGE:latest nginx/
-        # - docker push $DOCKER_API_IMAGE:latest
-        # - docker push $DOCKER_FLASK_IMAGE:latest
-        - docker push $DOCKER_FLASK_IMAGE:prova
+        - docker pull FLASK_TEST_IMAGE || true
+        - docker pull NGINX_TEST_IMAGE || true
+        - docker pull API_TEST_IMAGE || true
+        - docker tag API_TEST_IMAGE API_IMAGE 
+        - docker tag FLASK_TEST_IMAGE FLASK_IMAGE
+        - docker tag NGINX_TEST_IMAGE NGINX_IMAGE
+        - docker push API_IMAGE
+        - docker push FLASK_IMAGE
+        - docker push NGINX_IMAGE
 
 
 
