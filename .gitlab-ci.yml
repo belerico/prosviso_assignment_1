@@ -29,6 +29,9 @@ build:
         - docker build --pull --cache-from $DOCKER_API_IMAGE:latest --tag $DOCKER_API_IMAGE:latest api/
         - docker build --pull --cache-from $DOCKER_FLASK_IMAGE:latest --tag $DOCKER_FLASK_IMAGE:latest flask/
         - docker build --pull --cache-from $DOCKER_NGINX_IMAGE:latest --tag $DOCKER_NGINX_IMAGE:latest nginx/
+        - docker push $DOCKER_API_IMAGE:latest
+        - docker push $DOCKER_FLASK_IMAGE:latest
+        - docker push $DOCKER_NGINX_IMAGE:latest
 
 # test:
 #     stage: test
