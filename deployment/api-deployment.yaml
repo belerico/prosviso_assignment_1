@@ -13,9 +13,11 @@ spec:
         # the Deployment label selector to this value
         app: api-pod
     spec:
+      imagePullSecrets: # use the secrets created before the deployment for authenticating with gitlab registry
+        - name: registry.gitlab.com
       containers:
         - name: api-container
-          image: webapp-api:kuber
+          image: registry.gitlab.com/lucabrena/pss_assignment_1/api:latest
           ports:
             - name: http-api
               containerPort: 7000

@@ -13,9 +13,11 @@ spec:
         # the Deployment label selector to this value
         app: flask-pod
     spec:
+      imagePullSecrets: # use the secrets created before the deployment for authenticating with gitlab registry
+        - name: registry.gitlab.com
       containers:
         - name: flask-container
-          image: webapp-flask:kuber
+          image: registry.gitlab.com/lucabrena/pss_assignment_1/flask:latest
           ports:
             - name: http-flask
               containerPort: 5000
