@@ -23,15 +23,15 @@ stages:
 build:
     stage: build
     script:
-        - docker pull FLASK_IMAGE || true
-        - docker pull NGINX_IMAGE || true
-        - docker pull API_IMAGE || true
-        - docker build --cache-from API_IMAGE -t API_TEST_IMAGE api/
-        - docker build --cache-from FLASK_IMAGE -t FLASK_TEST_IMAGE flask/
-        - docker build --cache-from NGINX_IMAGE -t NGINX_TEST_IMAGE nginx/
-        - docker push API_TEST_IMAGE
-        - docker push FLASK_TEST_IMAGE
-        - docker push NGINX_TEST_IMAGE
+        - docker pull $FLASK_IMAGE || true
+        - docker pull $NGINX_IMAGE || true
+        - docker pull $API_IMAGE || true
+        - docker build --cache-from $API_IMAGE -t $API_TEST_IMAGE api/
+        - docker build --cache-from $FLASK_IMAGE -t $FLASK_TEST_IMAGE flask/
+        - docker build --cache-from $NGINX_IMAGE -t $NGINX_TEST_IMAGE nginx/
+        - docker push $API_TEST_IMAGE
+        - docker push $FLASK_TEST_IMAGE
+        - docker push $NGINX_TEST_IMAGE
 
 test:
     stage: test
@@ -46,15 +46,15 @@ test:
 push:
     stage: push
     script:
-        - docker pull FLASK_TEST_IMAGE || true
-        - docker pull NGINX_TEST_IMAGE || true
-        - docker pull API_TEST_IMAGE || true
-        - docker tag API_TEST_IMAGE API_IMAGE 
-        - docker tag FLASK_TEST_IMAGE FLASK_IMAGE
-        - docker tag NGINX_TEST_IMAGE NGINX_IMAGE
-        - docker push API_IMAGE
-        - docker push FLASK_IMAGE
-        - docker push NGINX_IMAGE
+        - docker pull $FLASK_TEST_IMAGE || true
+        - docker pull $NGINX_TEST_IMAGE || true
+        - docker pull $API_TEST_IMAGE || true
+        - docker tag $API_TEST_IMAGE $API_IMAGE 
+        - docker tag $FLASK_TEST_IMAGE $FLASK_IMAGE
+        - docker tag $NGINX_TEST_IMAGE $NGINX_IMAGE
+        - docker push $API_IMAGE
+        - docker push $FLASK_IMAGE
+        - docker push $$NGINX_IMAGE
 
 
 
