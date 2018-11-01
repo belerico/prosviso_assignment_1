@@ -1,18 +1,17 @@
 image: tiangolo/docker-with-compose:latest
 
 variables:
-    DOCKER_REGISTRY: registry.gitlab.com
-    DOCKER_FLASK_IMAGE: registry.gitlab.com/lucabrena/pss_assignment_1/flask
-    DOCKER_API_IMAGE: registry.gitlab.com/lucabrena/pss_assignment_1/api
-    DOCKER_NGINX_IMAGE: registry.gitlab.com/lucabrena/pss_assignment_1/nginx
+    DOCKER_FLASK_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/flask:latest
+    DOCKER_API_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/api:latest
+    DOCKER_NGINX_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/nginx:latest
 
 services:
     - docker:dind
 
 stages:
     - build
-    - test
-    - push
+    # - test
+    # - push
 
 cache:
   paths:
@@ -21,29 +20,35 @@ cache:
 build:
     stage: build
     script:
-        - docker build --cache-from $DOCKER_API_IMAGE:latest --tag $DOCKER_API_IMAGE:$CI_BUILD_REF --tag $DOCKER_API_IMAGE:latest api/
-        - docker build --cache-from $DOCKER_FLASK_IMAGE:latest --tag $DOCKER_FLASK_IMAGE:$CI_BUILD_REF --tag $DOCKER_FLASK_IMAGE:latest flask/
-        - docker build --cache-from $DOCKER_NGINX_IMAGE:latest --tag $DOCKER_NGINX_IMAGE:$CI_BUILD_REF --tag $DOCKER_NGINX_IMAGE:latest nginx/
+        - docker pull $DOCKER_FLASK_IMAGE || true
+        - docker pull $DOCKER_NGINX_IMAGE || true
+        - docker pull $DOCKER_API_IMAGE || true
+        # - docker build --cache-from $CONTAINER_IMAGE:latest --tag $CONTAINER_IMAGE:$CI_COMMIT_SHA --tag $CONTAINER_IMAGE:latest .
+        # - docker push $CONTAINER_IMAGE:$CI_COMMIT_SHA
+        # - docker push $CONTAINER_IMAGE:latest
+        # - docker build --cache-from $DOCKER_API_IMAGE:latest --tag $DOCKER_API_IMAGE:$CI_BUILD_REF --tag $DOCKER_API_IMAGE:latest api/
+        # - docker build --cache-from $DOCKER_FLASK_IMAGE:latest --tag $DOCKER_FLASK_IMAGE:$CI_BUILD_REF --tag $DOCKER_FLASK_IMAGE:latest flask/
+        # - docker build --cache-from $DOCKER_NGINX_IMAGE:latest --tag $DOCKER_NGINX_IMAGE:$CI_BUILD_REF --tag $DOCKER_NGINX_IMAGE:latest nginx/
 
-test:
-    stage: test
-    services: 
-        - redis
-    script:
-        - cd api
-        - pip install --upgrade pip
-        - pip install flask flask_restful redis pytest
-        - pytest -p no:cacheprovider tests
+# test:
+#     stage: test
+#     services: 
+#         - redis
+#     script:
+#         - cd api
+#         - pip install --upgrade pip
+#         - pip install flask flask_restful redis pytest
+#         - pytest -p no:cacheprovider tests
 
-push:
-    stage: push
-    services: 
-        - docker:dind
-    script:
-        - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_REGISTRY
-        - docker push $DOCKER_FLASK_IMAGE:latest
-        - docker push $DOCKER_API_IMAGE:latest
-        - docker push $DOCKER_NGINX_IMAGE:latest
+# push:
+#     stage: push
+#     services: 
+#         - docker:dind
+#     script:
+#         - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $DOCKER_REGISTRY
+#         - docker push $DOCKER_FLASK_IMAGE:latest
+#         - docker push $DOCKER_API_IMAGE:latest
+#         - docker push $DOCKER_NGINX_IMAGE:latest
 
 
 
