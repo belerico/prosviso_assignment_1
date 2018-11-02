@@ -23,7 +23,8 @@ build-api:
     services:
         - docker:dind
     script:
-        - docker build --pull --cache-from $API_IMAGE -t $API_TEST_IMAGE api/
+        - docker pull $API_IMAGE
+        - docker build --cache-from $API_IMAGE -t $API_TEST_IMAGE api/
         - docker push $API_TEST_IMAGE
 
 build-flask:
@@ -31,7 +32,8 @@ build-flask:
     services:
         - docker:dind
     script:
-        - docker build --pull --cache-from $FLASK_IMAGE -t $FLASK_TEST_IMAGE flask/
+        - docker pull $FLASK_IMAGE
+        - docker build --cache-from $FLASK_IMAGE -t $FLASK_TEST_IMAGE flask/
         - docker push $FLASK_TEST_IMAGE
 
 build-nginx:
@@ -39,7 +41,8 @@ build-nginx:
     services:
         - docker:dind
     script:
-        - docker build --pull --cache-from $NGINX_IMAGE -t $NGINX_TEST_IMAGE nginx/
+        - docker pull $NGINX_IMAGE
+        - docker build --cache-from $NGINX_IMAGE -t $NGINX_TEST_IMAGE nginx/
         - docker push $NGINX_TEST_IMAGE
 
 build-test-env:
@@ -47,7 +50,8 @@ build-test-env:
     services:
         - docker:dind
     script:
-        - docker build --pull --cache-from $DOCKER_TEST_ENV_IMAGE -t $DOCKER_TEST_ENV_IMAGE tests/
+        - docker pull $DOCKER_TEST_ENV_IMAGE
+        - docker build --cache-from $DOCKER_TEST_ENV_IMAGE -t $DOCKER_TEST_ENV_IMAGE tests/
         - docker push $DOCKER_TEST_ENV_IMAGE
 
 test:
