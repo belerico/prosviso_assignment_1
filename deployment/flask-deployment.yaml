@@ -17,7 +17,7 @@ spec:
         - name: registry.gitlab.com
       containers:
         - name: flask-container
-          image: registry.gitlab.com/lucabrena/pss_assignment_1/deploy/flask:latest
+          image: registry.gitlab.com/lucabrena/pss_assignment_1/deploy/flask
           ports:
             - name: http-flask
               containerPort: 5000
