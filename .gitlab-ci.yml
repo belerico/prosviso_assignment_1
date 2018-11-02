@@ -1,16 +1,13 @@
 image: docker:latest
 
 variables:
-    DEPLOY_PATH: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/deploy
-    DEV_PATH: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/dev
+    FLASK_DEPLOY_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/deploy/flask:latest
+    API_DEPLOY_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/deploy/api:latest
+    NGINX_DEPLOY_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/deploy/nginx:latest
 
-    FLASK_DEPLOY_IMAGE: $DEPLOY_PATH/flask:latest
-    API_DEPLOY_IMAGE: $DEPLOY_PATH/api:latest
-    NGINX_DEPLOY_IMAGE: $DEPLOY_PATH/nginx:latest
-
-    FLASK_DEV_IMAGE: $DEV_PATH/flask
-    API_DEV_IMAGE: $DEV_PATH/api
-    NGINX_DEV_IMAGE: $DEV_PATH/nginx
+    FLASK_DEV_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/dev/flask
+    API_DEV_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/dev/api
+    NGINX_DEV_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/dev/nginx
 
     DOCKER_DEV_ENV_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/env/test-env:latest
     
