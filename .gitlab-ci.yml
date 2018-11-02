@@ -29,7 +29,7 @@ build-flask:
     stage: build
     services:
         - docker:dind
-    script:Y
+    script:
         - docker pull $FLASK_IMAGE:dev || true
         - docker build --cache-from $FLASK_IMAGE:dev --tag $FLASK_IMAGE:$CI_COMMIT_SHA flask/
         - docker push $FLASK_IMAGE:$CI_COMMIT_SHA
