@@ -13,9 +13,6 @@ variables:
     
     DOCKER_DRIVER: overlay2
 
-before_script:
-  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-
 stages:
     - build
     - test
@@ -27,6 +24,7 @@ build-api:
     services:
         - docker:dind
     script:
+        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
         - docker pull $API_DEV_IMAGE:dev || true
         - docker build --cache-from $API_DEV_IMAGE --tag $API_DEV_IMAGE:$CI_COMMIT_SHA api/
         - docker push $API_DEV_IMAGE:$CI_COMMIT_SHA
@@ -36,6 +34,7 @@ build-flask:
     services:
         - docker:dind
     script:
+        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
         - docker pull $FLASK_DEV_IMAGE:dev || true
         - docker build --cache-from $FLASK_DEV_IMAGE --tag $FLASK_DEV_IMAGE:$CI_COMMIT_SHA flask/
         - docker push $FLASK_DEV_IMAGE:$CI_COMMIT_SHA
@@ -45,6 +44,7 @@ build-nginx:
     services:
         - docker:dind
     script:
+        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
         - docker pull $NGINX_DEV_IMAGE:dev || true
         - docker build --cache-from $NGINX_DEV_IMAGE --tag $NGINX_DEV_IMAGE:$CI_COMMIT_SHA nginx/
         - docker push $NGINX_DEV_IMAGE:$CI_COMMIT_SHA
@@ -54,6 +54,7 @@ build-test-env:
     services:
         - docker:dind
     script:
+        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
         - docker pull $DOCKER_DEV_ENV_IMAGE
         - docker build --cache-from $DOCKER_DEV_ENV_IMAGE -t $DOCKER_DEV_ENV_IMAGE tests/
         - docker push $DOCKER_DEV_ENV_IMAGE
@@ -73,8 +74,9 @@ push-api:
     services:
         - docker:dind
     script:
+        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
         - docker pull $API_DEV_IMAGE:$CI_COMMIT_SHA
-        - docker tag $API_DEV_IMAGE:$CI_COMMIT_SHA $API_DEV_IMAGE:latest
+        - docker tag $API_DEV_IMAGE:$CI_COMMIT_SHA $API_DEV_IMAGE:dev
         - docker push $API_DEV_IMAGE:dev
 
 push-flask:
@@ -82,8 +84,9 @@ push-flask:
     services:
         - docker:dind
     script:
+        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
         - docker pull $FLASK_DEV_IMAGE:$CI_COMMIT_SHA
-        - docker tag $FLASK_DEV_IMAGE:$CI_COMMIT_SHA $FLASK_DEV_IMAGE:latest
+        - docker tag $FLASK_DEV_IMAGE:$CI_COMMIT_SHA $FLASK_DEV_IMAGE:dev
         - docker push $FLASK_DEV_IMAGE:dev
 
 push-nginx:
@@ -91,8 +94,9 @@ push-nginx:
     services:
         - docker:dind
     script:
+        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
         - docker pull $NGINX_DEV_IMAGE
-        - docker tag $NGINX_DEV_IMAGE:$CI_COMMIT_SHA $NGINX_DEV_IMAGE:latest
+        - docker tag $NGINX_DEV_IMAGE:$CI_COMMIT_SHA $NGINX_DEV_IMAGE:dev
         - docker push $NGINX_DEV_IMAGE:dev
 
 release-api:
