@@ -1,17 +1,14 @@
 image: docker:latest
 
 variables:
-    FLASK_DEPLOY_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/deploy/flask:latest
-    API_DEPLOY_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/deploy/api:latest
-    NGINX_DEPLOY_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/deploy/nginx:latest
-
-    FLASK_DEV_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/dev/flask
-    API_DEV_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/dev/api
-    NGINX_DEV_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/dev/nginx
-
+    FLASK_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/flask
+    API_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/api
+    NGINX_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/nginx
     DOCKER_DEV_ENV_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/env/test-env:latest
-    
     DOCKER_DRIVER: overlay2
+
+before_script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
 
 stages:
     - build
@@ -24,37 +21,33 @@ build-api:
     services:
         - docker:dind
     script:
-        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-        - docker pull $API_DEV_IMAGE:dev || true
-        - docker build --cache-from $API_DEV_IMAGE --tag $API_DEV_IMAGE:$CI_COMMIT_SHA api/
-        - docker push $API_DEV_IMAGE:$CI_COMMIT_SHA
+        - docker pull $API_IMAGE:dev || true
+        - docker build --cache-from $API_IMAGE:dev --tag $API_IMAGE:$CI_COMMIT_SHA api/
+        - docker push $API_IMAGE:$CI_COMMIT_SHA
 
 build-flask:
     stage: build
     services:
         - docker:dind
-    script:
-        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-        - docker pull $FLASK_DEV_IMAGE:dev || true
-        - docker build --cache-from $FLASK_DEV_IMAGE --tag $FLASK_DEV_IMAGE:$CI_COMMIT_SHA flask/
-        - docker push $FLASK_DEV_IMAGE:$CI_COMMIT_SHA
+    script:Y
+        - docker pull $FLASK_IMAGE:dev || true
+        - docker build --cache-from $FLASK_IMAGE:dev --tag $FLASK_IMAGE:$CI_COMMIT_SHA flask/
+        - docker push $FLASK_IMAGE:$CI_COMMIT_SHA
 
 build-nginx:
     stage: build
     services:
         - docker:dind
     script:
-        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-        - docker pull $NGINX_DEV_IMAGE:dev || true
-        - docker build --cache-from $NGINX_DEV_IMAGE --tag $NGINX_DEV_IMAGE:$CI_COMMIT_SHA nginx/
-        - docker push $NGINX_DEV_IMAGE:$CI_COMMIT_SHA
+        - docker pull $NGINX_IMAGE:dev || true
+        - docker build --cache-from $NGINX_IMAGE:dev --tag $NGINX_IMAGE:$CI_COMMIT_SHA nginx/
+        - docker push $NGINX_IMAGE:$CI_COMMIT_SHA
 
 build-test-env:
     stage: build
     services:
         - docker:dind
     script:
-        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
         - docker pull $DOCKER_DEV_ENV_IMAGE || true
         - docker build --cache-from $DOCKER_DEV_ENV_IMAGE -t $DOCKER_DEV_ENV_IMAGE tests/
         - docker push $DOCKER_DEV_ENV_IMAGE
@@ -74,30 +67,27 @@ push-api:
     services:
         - docker:dind
     script:
-        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-        - docker pull $API_DEV_IMAGE:$CI_COMMIT_SHA
-        - docker tag $API_DEV_IMAGE:$CI_COMMIT_SHA $API_DEV_IMAGE:dev
-        - docker push $API_DEV_IMAGE:dev
+        - docker pull $API_IMAGE:$CI_COMMIT_SHA
+        - docker tag $API_IMAGE:$CI_COMMIT_SHA $API_IMAGE:dev
+        - docker push $API_IMAGE:dev
 
 push-flask:
     stage: push
     services:
         - docker:dind
     script:
-        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-        - docker pull $FLASK_DEV_IMAGE:$CI_COMMIT_SHA
-        - docker tag $FLASK_DEV_IMAGE:$CI_COMMIT_SHA $FLASK_DEV_IMAGE:dev
-        - docker push $FLASK_DEV_IMAGE:dev
+        - docker pull $FLASK_IMAGE:$CI_COMMIT_SHA
+        - docker tag $FLASK_IMAGE:$CI_COMMIT_SHA $FLASK_IMAGE:dev
+        - docker push $FLASK_IMAGE:dev
 
 push-nginx:
     stage: push
     services:
         - docker:dind
     script:
-        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-        - docker pull $NGINX_DEV_IMAGE
-        - docker tag $NGINX_DEV_IMAGE:$CI_COMMIT_SHA $NGINX_DEV_IMAGE:dev
-        - docker push $NGINX_DEV_IMAGE:dev
+        - docker pull $NGINX_IMAGE:$CI_COMMIT_SHA
+        - docker tag $NGINX_IMAGE:$CI_COMMIT_SHA $NGINX_IMAGE:dev
+        - docker push $NGINX_IMAGE:dev
 
 release-api:
     stage: release
@@ -106,9 +96,9 @@ release-api:
     only:
         - kubernetes
     script:
-        - docker pull $API_DEV_IMAGE
-        - docker tag $API_DEV_IMAGE $API_DEPLOY_IMAGE
-        - docker push $API_DEPLOY_IMAGE
+        - docker pull $API_IMAGE:dev
+        - docker tag $API_IMAGE:dev $API_DEPLOY_IMAGE:latest
+        - docker push $API_DEPLOY_IMAGE:latest
 
 release-flask:
     stage: release
@@ -117,9 +107,9 @@ release-flask:
     only:
         - kubernetes
     script:
-        - docker pull $FLASK_DEV_IMAGE
-        - docker tag $FLASK_DEV_IMAGE $FLASK_DEPLOY_IMAGE
-        - docker push $FLASK_DEPLOY_IMAGE
+        - docker pull $FLASK_IMAGE:dev
+        - docker tag $FLASK_IMAGE:dev $FLASK_DEPLOY_IMAGE:latest
+        - docker push $FLASK_DEPLOY_IMAGE:latest
 
 release-nginx:
     stage: release
@@ -128,9 +118,9 @@ release-nginx:
     only:
         - kubernetes
     script:
-        - docker pull $NGINX_DEV_IMAGE
-        - docker tag $NGINX_DEV_IMAGE $NGINX_DEPLOY_IMAGE
-        - docker push $NGINX_DEPLOY_IMAGE
+        - docker pull $NGINX_IMAGE:dev
+        - docker tag $NGINX_IMAGE:dev $NGINX_DEPLOY_IMAGE:latest
+        - docker push $NGINX_DEPLOY_IMAGE:latest
 
 
 
