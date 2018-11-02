@@ -20,6 +20,8 @@ build-api:
     stage: build
     services:
         - docker:dind
+    only:
+        - development
     script:
         - docker pull $API_IMAGE:dev || true
         - docker build --cache-from $API_IMAGE:dev --tag $API_IMAGE:$CI_COMMIT_SHA api/
@@ -29,6 +31,8 @@ build-flask:
     stage: build
     services:
         - docker:dind
+    only:
+        - development
     script:
         - docker pull $FLASK_IMAGE:dev || true
         - docker build --cache-from $FLASK_IMAGE:dev --tag $FLASK_IMAGE:$CI_COMMIT_SHA flask/
@@ -38,6 +42,8 @@ build-nginx:
     stage: build
     services:
         - docker:dind
+    only:
+        - development
     script:
         - docker pull $NGINX_IMAGE:dev || true
         - docker build --cache-from $NGINX_IMAGE:dev --tag $NGINX_IMAGE:$CI_COMMIT_SHA nginx/
@@ -47,6 +53,8 @@ build-test-env:
     stage: build
     services:
         - docker:dind
+    only:
+        - development
     script:
         - docker pull $DOCKER_DEV_ENV_IMAGE || true
         - docker build --cache-from $DOCKER_DEV_ENV_IMAGE -t $DOCKER_DEV_ENV_IMAGE tests/
@@ -66,6 +74,8 @@ push-api:
     stage: push
     services:
         - docker:dind
+    only:
+        - development
     script:
         - docker pull $API_IMAGE:$CI_COMMIT_SHA
         - docker tag $API_IMAGE:$CI_COMMIT_SHA $API_IMAGE:dev
@@ -75,6 +85,8 @@ push-flask:
     stage: push
     services:
         - docker:dind
+    only:
+        - development
     script:
         - docker pull $FLASK_IMAGE:$CI_COMMIT_SHA
         - docker tag $FLASK_IMAGE:$CI_COMMIT_SHA $FLASK_IMAGE:dev
@@ -84,6 +96,8 @@ push-nginx:
     stage: push
     services:
         - docker:dind
+    only:
+        - development
     script:
         - docker pull $NGINX_IMAGE:$CI_COMMIT_SHA
         - docker tag $NGINX_IMAGE:$CI_COMMIT_SHA $NGINX_IMAGE:dev
