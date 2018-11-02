@@ -1,12 +1,13 @@
 image: tiangolo/docker-with-compose:latest
 
 variables:
-    FLASK_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/flask:latest
-    API_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/api:latest
-    NGINX_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/nginx:latest
-    FLASK_TEST_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/flask:$CI_COMMIT_SHA
-    API_TEST_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/api:$CI_COMMIT_SHA
-    NGINX_TEST_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/nginx:$CI_COMMIT_SHA
+    FLASK_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/deploy/flask:latest
+    API_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/deploy/api:latest
+    NGINX_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/deploy/nginx:latest
+    FLASK_TEST_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/test/flask:$CI_COMMIT_SHA
+    API_TEST_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/test/api:$CI_COMMIT_SHA
+    NGINX_TEST_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/test/nginx:$CI_COMMIT_SHA
+    DOCKER_TEST_ENV_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/env/test-env:latest
     DOCKER_DRIVER: overlay2
 
 before_script:
@@ -22,26 +23,27 @@ build:
     services:
         - docker:dind
     script:
-        - docker pull $FLASK_IMAGE || true
-        - docker pull $NGINX_IMAGE || true
-        - docker pull $API_IMAGE || true
-        - docker build --cache-from $API_IMAGE -t $API_TEST_IMAGE api/
-        - docker build --cache-from $FLASK_IMAGE -t $FLASK_TEST_IMAGE flask/
-        - docker build --cache-from $NGINX_IMAGE -t $NGINX_TEST_IMAGE nginx/
+        # - docker pull $FLASK_IMAGE || true
+        # - docker pull $NGINX_IMAGE || true
+        # - docker pull $API_IMAGE || true
+        - docker build --pull --cache-from $API_IMAGE -t $API_TEST_IMAGE api/
+        - docker build --pull --cache-from $FLASK_IMAGE -t $FLASK_TEST_IMAGE flask/
+        - docker build --pull --cache-from $NGINX_IMAGE -t $NGINX_TEST_IMAGE nginx/
+        - docker build --pull --cache-from $DOCKER_TEST_ENV_IMAGE -t $DOCKER_TEST_ENV_IMAGE tests/
         - docker push $API_TEST_IMAGE
         - docker push $FLASK_TEST_IMAGE
         - docker push $NGINX_TEST_IMAGE
+        - docker push $DOCKER_TEST_ENV_IMAGE
 
 test:
     stage: test
+    image: $DOCKER_TEST_ENV_IMAGE
     before_script: 
         - ''
     services: 
         - redis
     script:
         - cd api
-        - pip install --upgrade pip
-        - pip install flask flask_restful redis pytest
         - pytest -p no:cacheprovider tests
 
 push:
