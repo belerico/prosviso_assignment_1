@@ -18,21 +18,36 @@ stages:
     - test
     - push
 
-build:
+build-api:
     stage: build
     services:
         - docker:dind
     script:
-        # - docker pull $FLASK_IMAGE || true
-        # - docker pull $NGINX_IMAGE || true
-        # - docker pull $API_IMAGE || true
         - docker build --pull --cache-from $API_IMAGE -t $API_TEST_IMAGE api/
-        - docker build --pull --cache-from $FLASK_IMAGE -t $FLASK_TEST_IMAGE flask/
-        - docker build --pull --cache-from $NGINX_IMAGE -t $NGINX_TEST_IMAGE nginx/
-        - docker build --pull --cache-from $DOCKER_TEST_ENV_IMAGE -t $DOCKER_TEST_ENV_IMAGE tests/
         - docker push $API_TEST_IMAGE
+
+build-flask:
+    stage: build
+    services:
+        - docker:dind
+    script:
+        - docker build --pull --cache-from $FLASK_IMAGE -t $FLASK_TEST_IMAGE flask/
         - docker push $FLASK_TEST_IMAGE
+
+build-nginx:
+    stage: build
+    services:
+        - docker:dind
+    script:
+        - docker build --pull --cache-from $NGINX_IMAGE -t $NGINX_TEST_IMAGE nginx/
         - docker push $NGINX_TEST_IMAGE
+
+build-test-env:
+    stage: build
+    services:
+        - docker:dind
+    script:
+        - docker build --pull --cache-from $DOCKER_TEST_ENV_IMAGE -t $DOCKER_TEST_ENV_IMAGE tests/
         - docker push $DOCKER_TEST_ENV_IMAGE
 
 test:
