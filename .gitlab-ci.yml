@@ -27,8 +27,8 @@ build-api:
     services:
         - docker:dind
     script:
-        - docker pull $API_DEV_IMAGE || true
-        - docker build --cache-from $API_DEV_IMAGE -t $API_DEV_IMAGE:$CI_COMMIT_SHA api/
+        - docker pull $API_DEV_IMAGE:dev || true
+        - docker build --cache-from $API_DEV_IMAGE --tag $API_DEV_IMAGE:$CI_COMMIT_SHA api/
         - docker push $API_DEV_IMAGE:$CI_COMMIT_SHA
 
 build-flask:
@@ -36,8 +36,8 @@ build-flask:
     services:
         - docker:dind
     script:
-        - docker pull $FLASK_DEV_IMAGE || true
-        - docker build --cache-from $FLASK_DEV_IMAGE -t $FLASK_DEV_IMAGE:$CI_COMMIT_SHA flask/
+        - docker pull $FLASK_DEV_IMAGE:dev || true
+        - docker build --cache-from $FLASK_DEV_IMAGE --tag $FLASK_DEV_IMAGE:$CI_COMMIT_SHA flask/
         - docker push $FLASK_DEV_IMAGE:$CI_COMMIT_SHA
 
 build-nginx:
@@ -45,8 +45,8 @@ build-nginx:
     services:
         - docker:dind
     script:
-        - docker pull $NGINX_DEV_IMAGE || true
-        - docker build --cache-from $NGINX_DEV_IMAGE -t $NGINX_DEV_IMAGE:$CI_COMMIT_SHA nginx/
+        - docker pull $NGINX_DEV_IMAGE:dev || true
+        - docker build --cache-from $NGINX_DEV_IMAGE --tag $NGINX_DEV_IMAGE:$CI_COMMIT_SHA nginx/
         - docker push $NGINX_DEV_IMAGE:$CI_COMMIT_SHA
 
 build-test-env:
@@ -75,7 +75,7 @@ push-api:
     script:
         - docker pull $API_DEV_IMAGE:$CI_COMMIT_SHA
         - docker tag $API_DEV_IMAGE:$CI_COMMIT_SHA $API_DEV_IMAGE:latest
-        - docker push $API_DEV_IMAGE:latest
+        - docker push $API_DEV_IMAGE:dev
 
 push-flask:
     stage: push
@@ -84,7 +84,7 @@ push-flask:
     script:
         - docker pull $FLASK_DEV_IMAGE:$CI_COMMIT_SHA
         - docker tag $FLASK_DEV_IMAGE:$CI_COMMIT_SHA $FLASK_DEV_IMAGE:latest
-        - docker push $FLASK_DEV_IMAGE:latest
+        - docker push $FLASK_DEV_IMAGE:dev
 
 push-nginx:
     stage: push
@@ -93,7 +93,7 @@ push-nginx:
     script:
         - docker pull $NGINX_DEV_IMAGE
         - docker tag $NGINX_DEV_IMAGE:$CI_COMMIT_SHA $NGINX_DEV_IMAGE:latest
-        - docker push $NGINX_DEV_IMAGE:latest
+        - docker push $NGINX_DEV_IMAGE:dev
 
 release-api:
     stage: release
