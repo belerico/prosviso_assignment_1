@@ -17,6 +17,6 @@ spec:
         - name: registry.gitlab.com
       containers:
         - name: nginx-container
-          image: registry.gitlab.com/lucabrena/pss_assignment_1/deploy/nginx
+          image: registry.gitlab.com/lucabrena/pss_assignment_1/deploy/nginx:latest
           ports:
             - containerPort: 80
