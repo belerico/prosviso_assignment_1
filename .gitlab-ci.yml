@@ -1,4 +1,4 @@
-image: tiangolo/docker-with-compose:latest
+image: docker:latest
 
 variables:
     FLASK_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH/deploy/flask:latest

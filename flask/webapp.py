@@ -44,9 +44,9 @@ def deleteall():
                                         text="No user to delete", 
                                         delete_link="")
 
-@webapp.route("/maxcounts", methods=["GET"])
+@webapp.route("/counts", methods=["GET"])
 def maxcounts():
-        r = requests.get("http://api:7000/api/users/max").json()
+        r = requests.get("http://api:7000/api/users/" + request.args.get("type")).json()
         if r:
                 table = ' \
                         <table class="table"> \

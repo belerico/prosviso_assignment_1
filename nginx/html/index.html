@@ -13,6 +13,12 @@
                 $("#show_all").click(function() {
                     window.location.href = "/showall"
                 });
+                $("#max-counts").click(function() {
+                    window.location.href = "/counts?type=max"
+                });
+                $("#min-counts").click(function() {
+                    window.location.href = "/counts?type=min"
+                });
             });
         </script>
     </head>
@@ -33,8 +39,10 @@
                                 <input name="username" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" type="submit">Send</button>
-                                    <button id="delete_all" class="btn btn-outline-secondary" type="button">Delete all</button>
                                     <button id="show_all" class="btn btn-outline-secondary" type="button">Show all</button>
+                                    <button id="max_counts" class="btn btn-outline-secondary" type="button">Best users</button>
+                                    <button id="min_counts" class="btn btn-outline-secondary" type="button">Worst users</button>
+                                    <button id="delete_all" class="btn btn-outline-secondary" type="button">Delete all</button>
                                 </div>
                         </div>
                     </form>
