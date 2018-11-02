@@ -66,6 +66,7 @@ push-api:
         - docker:dind
     script:
         - docker pull $API_TEST_IMAGE || true
+        - docker tag $API_TEST_IMAGE $API_IMAGE
         - docker push $API_IMAGE
 
 push-flask:
@@ -74,6 +75,7 @@ push-flask:
         - docker:dind
     script:
         - docker pull $FLASK_TEST_IMAGE || true
+        - docker tag $FLASK_TEST_IMAGE $FLASK_IMAGE
         - docker push $FLASK_IMAGE
 
 push-nginx:
@@ -82,6 +84,7 @@ push-nginx:
         - docker:dind
     script:
         - docker pull $NGINX_TEST_IMAGE || true
+        - docker tag $NGINX_TEST_IMAGE $NGINX_IMAGE
         - docker push $NGINX_IMAGE
 
 
