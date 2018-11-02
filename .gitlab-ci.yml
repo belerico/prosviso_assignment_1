@@ -112,7 +112,7 @@ release-api:
     only:
         - kubernetes
     script:
-        - docker pull $API_IMAGE:dev || true
+        - docker pull $API_IMAGE:dev
         - docker tag $API_IMAGE:dev $API_IMAGE:latest
         - docker push $API_IMAGE:latest
 
@@ -123,7 +123,7 @@ release-flask:
     only:
         - kubernetes
     script:
-        - docker pull $FLASK_IMAGE:dev || true
+        - docker pull $FLASK_IMAGE:dev
         - docker tag $FLASK_IMAGE:dev $FLASK_IMAGE:latest
         - docker push $FLASK_IMAGE:latest
 
@@ -134,7 +134,7 @@ release-nginx:
     only:
         - kubernetes
     script:
-        - docker pull $NGINX_IMAGE:dev || true
+        - docker pull $NGINX_IMAGE:dev
         - docker tag $NGINX_IMAGE:dev $NGINX_IMAGE:latest
         - docker push $NGINX_IMAGE:latest
 
