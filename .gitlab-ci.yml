@@ -67,6 +67,8 @@ test:
         - ''
     services: 
         - redis
+    only:
+        - development
     script:
         - pytest -p no:cacheprovider tests
 
