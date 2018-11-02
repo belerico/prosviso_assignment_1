@@ -18,6 +18,7 @@ spec:
       containers:
         - name: flask-container
           image: registry.gitlab.com/lucabrena/pss_assignment_1/deploy/flask
+          imagePullPolicy: Always
           ports:
             - name: http-flask
               containerPort: 5000

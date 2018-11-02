@@ -18,6 +18,7 @@ spec:
       containers:
         - name: api-container
           image: registry.gitlab.com/lucabrena/pss_assignment_1/deploy/api
+          imagePullPolicy: Always
           ports:
             - name: http-api
               containerPort: 7000
