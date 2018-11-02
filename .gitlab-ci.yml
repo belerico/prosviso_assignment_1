@@ -55,7 +55,7 @@ build-test-env:
         - docker:dind
     script:
         - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-        - docker pull $DOCKER_DEV_ENV_IMAGE
+        - docker pull $DOCKER_DEV_ENV_IMAGE || true
         - docker build --cache-from $DOCKER_DEV_ENV_IMAGE -t $DOCKER_DEV_ENV_IMAGE tests/
         - docker push $DOCKER_DEV_ENV_IMAGE
 
