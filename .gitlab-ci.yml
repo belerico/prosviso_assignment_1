@@ -141,8 +141,7 @@ deploy:
         - kubectl config set-credentials "$CI_PROJECT_ID" --token="$KUBE_TOKEN"
         - kubectl config set-context "$CI_PROJECT_ID" --cluster="$CI_PROJECT_ID" --user="$CI_PROJECT_ID" --namespace="default"
         - kubectl config use-context "$CI_PROJECT_ID"
-        - kubectl delete replicasets --all
-        - kubectl apply -f deployment/
+        - kubectl apply -f deployment/ --record
 
 
   
