@@ -1,5 +1,2 @@
 Dockerfile
-api.pyc
 __init__.py
-__pycache__
-tests/

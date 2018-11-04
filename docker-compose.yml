@@ -1,0 +1,51 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  api:
+    image: webapp-api
+    container_name: webapp-api
+    build:
+      context: $PWD/api/
+      dockerfile: $PWD/api/Dockerfile
+    # volumes:
+      # For development only
+      # - $PWD/api/:/api/
+    depends_on:
+      - redis
+
+  flask:
+    image: webapp-flask
+    container_name: webapp-flask
+    build:
+      context: $PWD/flask/
+      dockerfile: $PWD/flask/Dockerfile
+    # volumes:
+      # For development only
+      # - $PWD/flask/:/flask/
+    depends_on:
+      - api
+
+  nginx:
+    image: webapp-nginx
+    container_name: webapp-nginx
+    build:
+      context: $PWD/nginx
+      dockerfile: $PWD/nginx/Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - flask
+      - api
+    # volumes:
+      # For development only
+      # - $PWD/nginx/html/:/usr/share/nginx/html/
+
+  redis:
+    container_name: webapp-redis
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+
+volumes:  
+  redis_data:
