@@ -151,11 +151,7 @@ deploy:
     script:
         - apk add --update ca-certificates && apk add --update -t deps curl && curl -L https://storage.googleapis.com/kubernetes-release/release/v1.12.1/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl && chmod +x /usr/local/bin/kubectl
         - cd deployment/
-        - kubectl config set-cluster prova --server="$KUBE_URL" --certificate-authority="$KUBE_CA_PEM_FILE"
-        - kubectl config set-credentials admin --username="$KUBE_USER" --password="$KUBE_PASSWORD" --token="$KUBE_TOKEN"
-        - kubectl config set-context context-prova --cluster=prova --user=admin --namespace=default
-        - kubectl config use-context context-prova
-        - kubectl get all
+        - kubectl set image deployment.apps/flask-deployment flask-container=$CI_REGISTRY/$CI_PROJECT_PATH/kubernetes/flask:$CI_COMMIT_SHA
 
 
 
