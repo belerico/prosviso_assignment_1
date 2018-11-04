@@ -88,7 +88,7 @@ push-nginx:
     script:
         - docker pull $NGINX_IMAGE:$CI_COMMIT_SHA
         - docker tag $NGINX_IMAGE:$CI_COMMIT_SHA $NGINX_IMAGE:test
-        - docker push $NGINX_IMAGE:$CI_COMMIT_SHA
+        - docker push $NGINX_IMAGE:test
 
 release-api:
     stage: release
