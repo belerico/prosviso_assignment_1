@@ -22,27 +22,27 @@ build-api:
     services:
         - docker:dind
     script:
-        - docker pull $API_IMAGE:$CI_COMMIT_BEFORE_SHA || true
-        - docker build --cache-from $API_IMAGE:$CI_COMMIT_BEFORE_SHA --tag $API_IMAGE:build api/
-        - docker push $API_IMAGE:build
+        - docker pull $API_IMAGE:test || true
+        - docker build --cache-from $API_IMAGE:test --tag $API_IMAGE:$CI_COMMIT_SHA api/
+        - docker push $API_IMAGE:$CI_COMMIT_SHA
 
 build-flask:
     stage: build
     services:
         - docker:dind
     script:
-        - docker pull $FLASK_IMAGE:$CI_COMMIT_BEFORE_SHA || true
-        - docker build --cache-from $FLASK_IMAGE:$CI_COMMIT_BEFORE_SHA --tag $FLASK_IMAGE:build flask/
-        - docker push $FLASK_IMAGE:build
+        - docker pull $FLASK_IMAGE:test || true
+        - docker build --cache-from $FLASK_IMAGE:test --tag $FLASK_IMAGE:$CI_COMMIT_SHA flask/
+        - docker push $FLASK_IMAGE:$CI_COMMIT_SHA
 
 build-nginx:
     stage: build
     services:
         - docker:dind
     script:
-        - docker pull $NGINX_IMAGE:$CI_COMMIT_BEFORE_SHA || true
-        - docker build --cache-from $NGINX_IMAGE:$CI_COMMIT_BEFORE_SHA --tag $NGINX_IMAGE:build nginx/
-        - docker push $NGINX_IMAGE:build
+        - docker pull $NGINX_IMAGE:test || true
+        - docker build --cache-from $NGINX_IMAGE:test --tag $NGINX_IMAGE:$CI_COMMIT_SHA nginx/
+        - docker push $NGINX_IMAGE:$CI_COMMIT_SHA
 
 build-test-env:
     stage: build
@@ -68,26 +68,26 @@ push-api:
     services:
         - docker:dind
     script:
-        - docker pull $API_IMAGE:build
-        - docker tag $API_IMAGE:build $API_IMAGE:$CI_COMMIT_SHA
-        - docker push $API_IMAGE:$CI_COMMIT_SHA
+        - docker pull $API_IMAGE:$CI_COMMIT_SHA
+        - docker tag $API_IMAGE:$CI_COMMIT_SHA $API_IMAGE:test
+        - docker push $API_IMAGE:test
 
 push-flask:
     stage: push
     services:
         - docker:dind
     script:
-        - docker pull $FLASK_IMAGE:build
-        - docker tag $FLASK_IMAGE:build $FLASK_IMAGE:$CI_COMMIT_SHA
-        - docker push $FLASK_IMAGE:$CI_COMMIT_SHA
+        - docker pull $FLASK_IMAGE:$CI_COMMIT_SHA
+        - docker tag $FLASK_IMAGE:$CI_COMMIT_SHA $FLASK_IMAGE:test
+        - docker push $FLASK_IMAGE:test
 
 push-nginx:
     stage: push
     services:
         - docker:dind
     script:
-        - docker pull $NGINX_IMAGE:build
-        - docker tag $NGINX_IMAGE:build $NGINX_IMAGE:$CI_COMMIT_SHA
+        - docker pull $NGINX_IMAGE:$CI_COMMIT_SHA
+        - docker tag $NGINX_IMAGE:$CI_COMMIT_SHA $NGINX_IMAGE:test
         - docker push $NGINX_IMAGE:$CI_COMMIT_SHA
 
 release-api:
@@ -97,8 +97,8 @@ release-api:
     only:
         - kubernetes
     script:
-        - docker pull $API_IMAGE:$CI_COMMIT_SHA
-        - docker tag $API_IMAGE:$CI_COMMIT_SHA $API_IMAGE:latest
+        - docker pull $API_IMAGE:test
+        - docker tag $API_IMAGE:test $API_IMAGE:latest
         - docker push $API_IMAGE:latest
 
 release-flask:
@@ -108,8 +108,8 @@ release-flask:
     only:
         - kubernetes
     script:
-        - docker pull $FLASK_IMAGE:$CI_COMMIT_SHA
-        - docker tag $FLASK_IMAGE:$CI_COMMIT_SHA $FLASK_IMAGE:latest
+        - docker pull $FLASK_IMAGE:test
+        - docker tag $FLASK_IMAGE:test $FLASK_IMAGE:latest
         - docker push $FLASK_IMAGE:latest
 
 release-nginx:
@@ -119,8 +119,8 @@ release-nginx:
     only:
         - kubernetes
     script:
-        - docker pull $NGINX_IMAGE:$CI_COMMIT_SHA
-        - docker tag $NGINX_IMAGE:$CI_COMMIT_SHA $NGINX_IMAGE:latest
+        - docker pull $NGINX_IMAGE:test
+        - docker tag $NGINX_IMAGE:test $NGINX_IMAGE:latest
         - docker push $NGINX_IMAGE:latest
 
 deploy:
