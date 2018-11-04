@@ -17,7 +17,7 @@ spec:
         - name: registry.gitlab.com
       containers:
         - name: nginx-container
-          image: __IMAGE__
+          image: registry.gitlab.com/lucabrena/pss_assignment_1/kubernetes/nginx:build
           imagePullPolicy: Always
           ports:
             - containerPort: 80

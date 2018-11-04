@@ -17,7 +17,7 @@ spec:
         - name: registry.gitlab.com
       containers:
         - name: api-container
-          image: __IMAGE__
+          image: registry.gitlab.com/lucabrena/pss_assignment_1/kubernetes/api:build
           imagePullPolicy: Always
           ports:
             - name: http-api
