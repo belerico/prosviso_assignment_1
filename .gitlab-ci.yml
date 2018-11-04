@@ -141,12 +141,11 @@ release-nginx:
 
 deploy:
     stage: deploy
-    services:
-        - alpine
+    image: alpine:latest
     only:
         - kubernetes
     environment:
-        - production
+        name: production
     before_script:
         - ''
     script:
