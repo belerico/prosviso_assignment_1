@@ -141,7 +141,10 @@ deploy:
         - kubectl config set-credentials "$CI_PROJECT_ID" --token="$KUBE_TOKEN"
         - kubectl config set-context "$CI_PROJECT_ID" --cluster="$CI_PROJECT_ID" --user="$CI_PROJECT_ID" --namespace="default"
         - kubectl config use-context "$CI_PROJECT_ID"
-        - kubectl apply -f deployment/ --record
+        - kubectl set image deployment.apps/api-deployment api-container=$API_IMAGE:$CI_COMMIT_SHA --record=true
+        - kubectl set image deployment.apps/nginx-deployment nginx-container=$NGINX_IMAGE:$CI_COMMIT_SHA --record=true
+        - kubectl set image deployment.apps/flask-deployment flask-container=$FLASK_IMAGE:$CI_COMMIT_SHA --record=true
+        # - kubectl apply -f deployment/ --record
 
 
   
