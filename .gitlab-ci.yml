@@ -157,8 +157,6 @@ deploy:
         - echo KUBE_TOKEN=$KUBE_TOKEN
         - echo KUBE_NAMESPACE=$KUBE_NAMESPACE
 
-        - echo "HOLA"
-
         - sed -i -e "s|__DOCKER_IMAGE__|${FLASK_IMAGE}:${CI_COMMIT_SHA}|g" deployment/flask-deployment.yaml
 
         - kubectl config set-cluster "$CI_PROJECT_ID" --server="$KUBE_URL" --certificate-authority="$KUBE_CA_PEM_FILE"
