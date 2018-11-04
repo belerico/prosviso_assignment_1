@@ -14,62 +14,52 @@ stages:
     - build
     - test
     - push
-    # - release
+    - release
     - deploy
 
 build-api:
     stage: build
     services:
         - docker:dind
-    only:
-        - development
     script:
-        - docker pull $API_IMAGE:dev || true
-        - docker build --cache-from $API_IMAGE:dev --tag $API_IMAGE:$CI_COMMIT_SHA api/
-        - docker push $API_IMAGE:$CI_COMMIT_SHA
+        - docker pull $API_IMAGE:$CI_COMMIT_BEFORE_SHA || true
+        - docker build --cache-from $API_IMAGE:$CI_COMMIT_BEFORE_SHA --tag $API_IMAGE:build api/
+        - docker push $API_IMAGE:build
 
 build-flask:
     stage: build
     services:
         - docker:dind
-    only:
-        - development
     script:
-        - docker pull $FLASK_IMAGE:dev || true
-        - docker build --cache-from $FLASK_IMAGE:dev --tag $FLASK_IMAGE:$CI_COMMIT_SHA flask/
-        - docker push $FLASK_IMAGE:$CI_COMMIT_SHA
+        - docker pull $FLASK_IMAGE:$CI_COMMIT_BEFORE_SHA || true
+        - docker build --cache-from $FLASK_IMAGE:$CI_COMMIT_BEFORE_SHA --tag $FLASK_IMAGE:build flask/
+        - docker push $FLASK_IMAGE:build
 
 build-nginx:
     stage: build
     services:
         - docker:dind
-    only:
-        - development
     script:
-        - docker pull $NGINX_IMAGE:dev || true
-        - docker build --cache-from $NGINX_IMAGE:dev --tag $NGINX_IMAGE:$CI_COMMIT_SHA nginx/
-        - docker push $NGINX_IMAGE:$CI_COMMIT_SHA
+        - docker pull $NGINX_IMAGE:$CI_COMMIT_BEFORE_SHA || true
+        - docker build --cache-from $NGINX_IMAGE:$CI_COMMIT_BEFORE_SHA --tag $NGINX_IMAGE:build nginx/
+        - docker push $NGINX_IMAGE:build
 
 build-test-env:
     stage: build
     services:
         - docker:dind
-    only:
-        - development
     script:
         - docker pull $DOCKER_DEV_ENV_IMAGE || true
         - docker build --cache-from $DOCKER_DEV_ENV_IMAGE -t $DOCKER_DEV_ENV_IMAGE tests/
         - docker push $DOCKER_DEV_ENV_IMAGE
 
-test:
+test-api:
     stage: test
     image: $DOCKER_DEV_ENV_IMAGE
     before_script: 
         - ''
     services: 
         - redis
-    only:
-        - development
     script:
         - pytest -p no:cacheprovider tests
 
@@ -77,67 +67,61 @@ push-api:
     stage: push
     services:
         - docker:dind
-    only:
-        - development
     script:
-        - docker pull $API_IMAGE:$CI_COMMIT_SHA
-        - docker tag $API_IMAGE:$CI_COMMIT_SHA $API_IMAGE:dev
-        - docker push $API_IMAGE:dev
+        - docker pull $API_IMAGE:build
+        - docker tag $API_IMAGE:build $API_IMAGE:$CI_COMMIT_SHA
+        - docker push $API_IMAGE:$CI_COMMIT_SHA
 
 push-flask:
     stage: push
     services:
         - docker:dind
-    only:
-        - development
     script:
-        - docker pull $FLASK_IMAGE:$CI_COMMIT_SHA
-        - docker tag $FLASK_IMAGE:$CI_COMMIT_SHA $FLASK_IMAGE:dev
-        - docker push $FLASK_IMAGE:dev
+        - docker pull $FLASK_IMAGE:build
+        - docker tag $FLASK_IMAGE:build $FLASK_IMAGE:$CI_COMMIT_SHA
+        - docker push $FLASK_IMAGE:$CI_COMMIT_SHA
 
 push-nginx:
     stage: push
     services:
         - docker:dind
+    script:
+        - docker pull $NGINX_IMAGE:build
+        - docker tag $NGINX_IMAGE:build $NGINX_IMAGE:$CI_COMMIT_SHA
+        - docker push $NGINX_IMAGE:$CI_COMMIT_SHA
+
+release-api:
+    stage: release
+    services:
+        - docker:dind
     only:
-        - development
+        - kubernetes
+    script:
+        - docker pull $API_IMAGE:$CI_COMMIT_SHA
+        - docker tag $API_IMAGE:$CI_COMMIT_SHA $API_IMAGE:latest
+        - docker push $API_IMAGE:latest
+
+release-flask:
+    stage: release
+    services:
+        - docker:dind
+    only:
+        - kubernetes
+    script:
+        - docker pull $FLASK_IMAGE:$CI_COMMIT_SHA
+        - docker tag $FLASK_IMAGE:$CI_COMMIT_SHA $FLASK_IMAGE:latest
+        - docker push $FLASK_IMAGE:latest
+
+release-nginx:
+    stage: release
+    services:
+        - docker:dind
+    only:
+        - kubernetes
     script:
         - docker pull $NGINX_IMAGE:$CI_COMMIT_SHA
-        - docker tag $NGINX_IMAGE:$CI_COMMIT_SHA $NGINX_IMAGE:dev
-        - docker push $NGINX_IMAGE:dev
-
-# release-api:
-#     stage: release
-#     services:
-#         - docker:dind
-#     only:
-#         - kubernetes
-#     script:
-#         - docker pull $API_IMAGE:dev
-#         - docker tag $API_IMAGE:dev $API_IMAGE:latest
-#         - docker push $API_IMAGE:latest
-
-# release-flask:
-#     stage: release
-#     services:
-#         - docker:dind
-#     only:
-#         - kubernetes
-#     script:
-#         - docker pull $FLASK_IMAGE:dev
-#         - docker tag $FLASK_IMAGE:dev $FLASK_IMAGE:latest
-#         - docker push $FLASK_IMAGE:latest
-
-# release-nginx:
-#     stage: release
-#     services:
-#         - docker:dind
-#     only:
-#         - kubernetes
-#     script:
-#         - docker pull $NGINX_IMAGE:dev
-#         - docker tag $NGINX_IMAGE:dev $NGINX_IMAGE:latest
-#         - docker push $NGINX_IMAGE:latest
+        - docker tag $NGINX_IMAGE:$CI_COMMIT_SHA $NGINX_IMAGE:latest
+        - docker push $NGINX_IMAGE:latest
 
 deploy:
     stage: deploy
@@ -150,20 +134,13 @@ deploy:
         - ''
     script:
         - apk add --update ca-certificates && apk add --update -t deps curl && curl -L https://storage.googleapis.com/kubernetes-release/release/v1.12.1/bin/linux/amd64/kubectl -o /usr/local/bin/kubectl && chmod +x /usr/local/bin/kubectl
-        - export
-        - echo CI_PROJECT_ID=$CI_PROJECT_ID
-        - echo KUBE_URL=$KUBE_URL
-        - echo KUBE_CA_PEM_FILE=$KUBE_CA_PEM_FILE
-        - echo KUBE_TOKEN=$KUBE_TOKEN
-        - echo KUBE_NAMESPACE=$KUBE_NAMESPACE
-
-        - sed -i -e "s|__DOCKER_IMAGE__|${FLASK_IMAGE}:${CI_COMMIT_SHA}|g" deployment/flask-deployment.yaml
-
+        - sed -i -e "s|__IMAGE__|${FLASK_IMAGE}:${CI_COMMIT_SHA}|g" deployment/flask-deployment.yaml
+        - sed -i -e "s|__IMAGE__|${NGINX_IMAGE}:${CI_COMMIT_SHA}|g" deployment/nginx-deployment.yaml
+        - sed -i -e "s|__IMAGE__|${API_IMAGE}:${CI_COMMIT_SHA}|g" deployment/api-deployment.yaml
         - kubectl config set-cluster "$CI_PROJECT_ID" --server="$KUBE_URL" --certificate-authority="$KUBE_CA_PEM_FILE"
         - kubectl config set-credentials "$CI_PROJECT_ID" --token="$KUBE_TOKEN"
         - kubectl config set-context "$CI_PROJECT_ID" --cluster="$CI_PROJECT_ID" --user="$CI_PROJECT_ID" --namespace="default"
         - kubectl config use-context "$CI_PROJECT_ID"
-
         - kubectl apply -f deployment/
 
 
