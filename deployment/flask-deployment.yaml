@@ -17,7 +17,8 @@ spec:
         - name: registry.gitlab.com
       containers:
         - name: flask-container
-          image: registry.gitlab.com/lucabrena/pss_assignment_1/kubernetes/flask
+          # image: registry.gitlab.com/lucabrena/pss_assignment_1/kubernetes/flask
+          image: __DOCKER_IMAGE__
           imagePullPolicy: Always
           ports:
             - name: http-flask
