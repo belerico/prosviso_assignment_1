@@ -10,7 +10,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /*
+      - path: prosviso.tk/*
         backend:
           serviceName: nginx
           servicePort: 80
