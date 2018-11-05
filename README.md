@@ -19,7 +19,7 @@ Vengono inoltre messe a disposizione delle semplici API per gestire le risorse.
 ### Struttura progetto
 
 <p align="center">
-    <img src="workflow/workflow.jpg" height="45%">
+    <img src="workflow/workflow.jpg" height="10%">
 </p>
 
 L'applicazione è ospitata su un cluster Kubernetes in produzione su Google Cloud.
@@ -67,6 +67,6 @@ Gli stage di Release e Deploy vengono eseguiti solo ed esclusivamente quando vie
 I possibili sviluppi futuri sono:
 
 * Gestire le richieste HTTPS
-* Prevedere un vero e proprio processo di sign up/in mediante l'utilizzo di JWT, differenziando dunque gli utenti generici dagli utenti admin e le relative funzioni ad essi associate
+* Prevedere un vero e proprio processo di sign up/in mediante l'utilizzo di [JWT](https://jwt.io/), differenziando dunque gli utenti generici dagli utenti admin e le relative funzioni ad essi associate
 * Provvedere a registare un dominio associato all'indirizzo IP dell'applicazione
 
