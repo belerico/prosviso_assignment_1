@@ -16,6 +16,17 @@ Vengono inoltre messe a disposizione delle semplici API per gestire le risorse.
 
 ### Struttura progetto
 
+![picture](./workflow/workflow-1.jpg)
+
+L'applicazione è costituita principalmente da quattro diversi componenti:
+
+* Un proxy reverse Nginx
+* Un web server UWSGI dove è ospitata una applicazione Flask
+* Un web server UWSGI dove sono ospitate le API per la gestione delle risorse
+* Un database Redis key-value
+
+Le richieste 
+Ognuna di queste componenti è stata realizzata tramite l'utilizzo di Docker, in particolare la corrispondenza componente:container è 1:1.
 
 
 ### Note
