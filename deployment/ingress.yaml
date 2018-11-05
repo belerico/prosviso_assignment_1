@@ -8,7 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: prosviso.tk
+  - host: http://prosviso.tk
     http:
       paths:
       - path: /*
