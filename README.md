@@ -10,16 +10,15 @@ Vengono inoltre messe a disposizione delle semplici API per gestire le risorse.
 
 ### Tecnologie utilizzate
 
-* Containerization: Docker (link)
-* Provisioning: Kubernetes (link)
-* CI/CD: Gitlab (link)
+* Containerization: [a link](https://docker.com) Docker
+* Provisioning: Kubernetes [a link](https://kubernetes.io) Kubernetes
+* CI/CD: [a link](https://gitlab.com) GitLab
 
 ### Struttura progetto
 
-(IMMAGINE)
-
+![picture](workflow/workflow.jpg)
 L'applicazione è ospitata su un cluster Kubernetes in produzione su Google Cloud.
-Le richieste del client all'indirizzo IP http://prosviso.tk o http://35.242.237.255 vengono prese in carico da Ingress, il load balancer predefinito di Kubernetes, che si occupa di esporre i servizi offerti dal cluster al client.
+Le richieste del client all'indirizzo IP http://35.242.237.255 vengono prese in carico da Ingress, il load balancer predefinito di Kubernetes, che si occupa di esporre i servizi offerti dal cluster al client.
 L'applicazione è costituita principalmente da quattro diversi componenti:
 
 * Un proxy reverse NGINX
@@ -55,8 +54,7 @@ La pipeline di GitLab per il CI/CD è suddivisa in 5 stage:
 * Release: le immagini vengono rinominate con il tag :latest e caricate sul registry
 * Deploy: se tutti gli stage vengono eseguiti con successo le immagini dal tag :$CI_COMMIT_SHA vengono utilizzate per aggiornare i container in esecuzione sul cluster Kubernetes
 
-Gli stage di Release e Deploy vengono eseguiti solo ed esclusivamente quando viene effettuata una commit o richiesta un'operazione di merge sul branch Kuberetes.
+Dove $CI_COMMIT_SHA sta ad indicare 
 
-### Note
+Gli stage di Release e Deploy vengono eseguiti solo ed esclusivamente quando viene effettuata una commit o richiesta di un'operazione di merge sul branch Kubernetes.
 
-Allo stato attuale il provisioning è gestito da `docker-compose`. Per diversificare le tecnologie stiamo sviluppando una versione complementare che utilizza Kubernetes.
