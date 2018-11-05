@@ -16,8 +16,7 @@ Vengono inoltre messe a disposizione delle semplici API per gestire le risorse.
 
 ### Struttura progetto
 
-![](workflow/workflow.jpg)
-<img src="workflow/workflow.jpg"  width="80%">
+<img src="workflow/workflow.jpg"  width="50%">
 
 
 L'applicazione è ospitata su un cluster Kubernetes in produzione su Google Cloud.
