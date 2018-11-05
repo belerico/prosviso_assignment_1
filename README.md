@@ -17,6 +17,9 @@ Vengono inoltre messe a disposizione delle semplici API per gestire le risorse.
 ### Struttura progetto
 
 ![picture](workflow/workflow.jpg)
+<img src="workflow/workflow.jpg"  width="120" height="120">
+
+
 L'applicazione è ospitata su un cluster Kubernetes in produzione su Google Cloud.
 Le richieste del client all'indirizzo IP http://35.242.237.255 vengono prese in carico da Ingress, il load balancer predefinito di Kubernetes, che si occupa di esporre i servizi offerti dal cluster al client.
 L'applicazione è costituita principalmente da quattro diversi componenti:
