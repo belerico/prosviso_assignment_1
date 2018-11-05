@@ -10,9 +10,9 @@ Vengono inoltre messe a disposizione delle semplici API per gestire le risorse.
 
 ### Tecnologie utilizzate
 
-* Containerization: [a link](https://docker.com) Docker
-* Provisioning: Kubernetes [a link](https://kubernetes.io) Kubernetes
-* CI/CD: [a link](https://gitlab.com) GitLab
+* Containerization: [Docker](https://docker.com)
+* Provisioning: Kubernetes [Kubernetes](https://kubernetes.io)
+* CI/CD: [GitLab](https://gitlab.com)
 
 ### Struttura progetto
 
