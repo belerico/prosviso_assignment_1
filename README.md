@@ -17,7 +17,7 @@ Vengono inoltre messe a disposizione delle semplici API per gestire le risorse.
 ### Struttura progetto
 
 <p align="center">
-    <img src="workflow/workflow.jpg" height="400px" width="400px">
+    <img src="workflow/workflow.jpg" width="45%">
 </p>
 
 L'applicazione è ospitata su un cluster Kubernetes in produzione su Google Cloud.
@@ -57,7 +57,7 @@ La pipeline di GitLab per il CI/CD è suddivisa in 5 stage:
 * Release: le immagini vengono rinominate con il tag :latest e caricate sul registry
 * Deploy: se tutti gli stage vengono eseguiti con successo le immagini dal tag :$CI_COMMIT_SHA vengono utilizzate per aggiornare i container in esecuzione sul cluster Kubernetes
 
-Dove $CI_COMMIT_SHA sta ad indicare 
+Dove $CI_COMMIT_SHA sta ad indicare il commit revision ([GitLab variables](https://docs.gitlab.com/ee/ci/variables/#predefined-variables-environment-variables)).
 
 Gli stage di Release e Deploy vengono eseguiti solo ed esclusivamente quando viene effettuata una commit o richiesta di un'operazione di merge sul branch Kubernetes.
 
