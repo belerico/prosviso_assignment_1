@@ -1,3 +1,5 @@
+L'applicazione è ospitata all'indirizzo IP http://35.242.237.255
+
 ### Studenti
 
 * Luca Brena, matricola: 808216
@@ -10,13 +12,16 @@ Vengono inoltre messe a disposizione delle semplici API per gestire le risorse.
 
 ### Tecnologie utilizzate
 
-* Containerization: [a link](https://docker.com) Docker
-* Provisioning: Kubernetes [a link](https://kubernetes.io) Kubernetes
-* CI/CD: [a link](https://gitlab.com) GitLab
+* Containerization: [Docker](https://docker.com)
+* Provisioning: Kubernetes [Kubernetes](https://kubernetes.io)
+* CI/CD: [GitLab](https://gitlab.com)
 
 ### Struttura progetto
 
-![picture](workflow/workflow.jpg)
+<p align="center">
+    <img src="workflow/workflow.jpg" height="10%">
+</p>
+
 L'applicazione è ospitata su un cluster Kubernetes in produzione su Google Cloud.
 Le richieste del client all'indirizzo IP http://35.242.237.255 vengono prese in carico da Ingress, il load balancer predefinito di Kubernetes, che si occupa di esporre i servizi offerti dal cluster al client.
 L'applicazione è costituita principalmente da quattro diversi componenti:
@@ -54,7 +59,14 @@ La pipeline di GitLab per il CI/CD è suddivisa in 5 stage:
 * Release: le immagini vengono rinominate con il tag :latest e caricate sul registry
 * Deploy: se tutti gli stage vengono eseguiti con successo le immagini dal tag :$CI_COMMIT_SHA vengono utilizzate per aggiornare i container in esecuzione sul cluster Kubernetes
 
-Dove $CI_COMMIT_SHA sta ad indicare 
-
+Dove $CI_COMMIT_SHA sta ad indicare il commit revision ([GitLab variables](https://docs.gitlab.com/ee/ci/variables/#predefined-variables-environment-variables)).<br>
 Gli stage di Release e Deploy vengono eseguiti solo ed esclusivamente quando viene effettuata una commit o richiesta di un'operazione di merge sul branch Kubernetes.
+
+### Sviluppi futuri
+
+I possibili sviluppi futuri sono:
+
+* Gestire le richieste HTTPS
+* Prevedere un vero e proprio processo di sign up/in mediante l'utilizzo di [JWT](https://jwt.io/), differenziando dunque gli utenti generici dagli utenti admin e le relative funzioni ad essi associate
+* Provvedere a registare un dominio associato all'indirizzo IP dell'applicazione
 
