@@ -11,20 +11,20 @@
             <div style="width: 100%">
                 <img src="/static/images/docker-flask.png" width="100%">
                 <p>
-                    <h3 id="studenti">Studenti</h3>
+                    <h4 id="studenti">Studenti</h4>
                     <ul>
                     <li>Luca Brena, matricola: 808216</li>
                     <li>Federico Belotti, matricola: 808708</li>
                     </ul>
-                    <h3 id="descrizione-progetto">Descrizione progetto</h3>
+                    <h4 id="descrizione-progetto">Descrizione progetto</h4>
                     <p>Il progetto consiste in un'applicazione web distribuita in cui, dato uno username, questa mostra quante volte tale username ha visitato la pagina. Vengono inoltre messe a disposizione delle semplici API per gestire le risorse.</p>
-                    <h3 id="tecnologie-utilizzate">Tecnologie utilizzate</h3>
+                    <h4 id="tecnologie-utilizzate">Tecnologie utilizzate</h4>
                     <ul>
                     <li>Containerization: <a href="https://docker.com">Docker</a></li>
                     <li>Provisioning: Kubernetes <a href="https://kubernetes.io">Kubernetes</a></li>
                     <li>CI/CD: <a href="https://gitlab.com">GitLab</a></li>
                     </ul>
-                    <h3 id="struttura-progetto">Struttura progetto</h3>
+                    <h4 id="struttura-progetto">Struttura progetto</h4>
                     <p align="center">
                         
                     <img src="/static/images/workflow.jpg" height="10%">
@@ -45,13 +45,13 @@
                     <li>Tutte le richieste che non corrispondono a nesuna delle precedenti vengono gestite dall'Ingress default backend (40x, 50x, ...)</li>
                     </ul>
                     <p>Le informazioni inerenti agli utenti (username e #visite) vengono memorizzate all'interno di Redis, un database key-value che comunica direttamente ed esclusivamente con le API. Le API, oltre che essere raggiungibili dal client tramite NGINX, possono essere contattate direttamente dall'applicazione Flask senza passare dal proxy reverse, migliorando le prestazioni complessive.</p>
-                    <h3 id="repository-branch">Repository branch</h3>
+                    <h4 id="repository-branch">Repository branch</h4>
                     <p>Il repository è suddiviso in due differenti branch:</p>
                     <ul>
                     <li>Kubernetes: branch di deployment</li>
                     <li>Development: branch di development</li>
                     </ul>
-                    <h3 id="gitlab-cicd-pipeline">GitLab CI/CD pipeline</h3>
+                    <h4 id="gitlab-cicd-pipeline">GitLab CI/CD pipeline</h4>
                     <p>La pipeline di GitLab per il CI/CD è suddivisa in 5 stage:</p>
                     <ul>
                     <li>Build: viene testato il building delle immagini. Se lo stage ha successo viene eseguita la push delle immagini sul registry GitLab con il tag :$CI_COMMIT_SHA</li>
@@ -61,7 +61,7 @@
                     <li>Deploy: se tutti gli stage vengono eseguiti con successo le immagini dal tag :$CI_COMMIT_SHA vengono utilizzate per aggiornare i container in esecuzione sul cluster Kubernetes</li>
                     </ul>
                     <p>Dove $CI_COMMIT_SHA sta ad indicare il commit revision (<a href="https://docs.gitlab.com/ee/ci/variables/#predefined-variables-environment-variables">GitLab variables</a>).<br> Gli stage di Release e Deploy vengono eseguiti solo ed esclusivamente quando viene effettuata una commit o richiesta di un'operazione di merge sul branch Kubernetes.</p>
-                    <h3 id="sviluppi-futuri">Sviluppi futuri</h3>
+                    <h4 id="sviluppi-futuri">Sviluppi futuri</h4>
                     <p>I possibili sviluppi futuri sono:</p>
                     <ul>
                     <li>Gestire le richieste HTTPS</li>

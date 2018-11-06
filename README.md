@@ -18,7 +18,7 @@ Vengono inoltre messe a disposizione delle semplici API per gestire le risorse.
 
 ### Struttura progetto
 
-![alt text](nginx/html/static/images/workflow.jpg)
+![](nginx/html/static/images/workflow.jpg)
 
 L'applicazione è ospitata su un cluster Kubernetes in produzione su Google Cloud.
 Le richieste del client all'indirizzo IP http://prosviso.duckdns.org/ vengono prese in carico da Ingress, il load balancer predefinito di Kubernetes, che si occupa di esporre i servizi offerti dal cluster al client.
