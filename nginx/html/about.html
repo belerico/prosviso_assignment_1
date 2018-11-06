@@ -3,14 +3,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <head>
-        <style>
-            .center {
-                display: block;
-                margin-left: auto;
-                margin-right: auto;
-                width: 50%;
-            }
-        </style>
         <link href="/static/css/lib/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
         <script src="/static/js/lib/jquery-3.3.1.min.js" type="text/javascript"></script>
     </head>
@@ -19,7 +11,6 @@
             <div style="width: 100%">
                 <img src="/static/images/docker-flask.png" width="100%">
                 <p>
-                    <p>L'applicazione è ospitata all'indirizzo IP http://35.242.237.255</p>
                     <h3 id="studenti">Studenti</h3>
                     <ul>
                     <li>Luca Brena, matricola: 808216</li>
@@ -34,9 +25,9 @@
                     <li>CI/CD: <a href="https://gitlab.com">GitLab</a></li>
                     </ul>
                     <h3 id="struttura-progetto">Struttura progetto</h3>
-                    <p class="center">
+                    <p align="center">
                         
-                    <img src="/static/workflow.jpg" height="10%">
+                    <img src="/static/images/workflow.jpg" height="10%">
                     </p>
 
                     <p>L'applicazione è ospitata su un cluster Kubernetes in produzione su Google Cloud. Le richieste del client all'indirizzo IP http://35.242.237.255 vengono prese in carico da Ingress, il load balancer predefinito di Kubernetes, che si occupa di esporre i servizi offerti dal cluster al client. L'applicazione è costituita principalmente da quattro diversi componenti:</p>

@@ -1,5 +1,6 @@
 .gitlab-ci.yml
 docker-compose.yml
+workflow/
 deployment/
 tests/
 README.md
