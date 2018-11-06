@@ -3,6 +3,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <head>
+        <style>
+            .center {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
+            }
+        </style>
         <link href="/static/css/lib/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
         <script src="/static/js/lib/jquery-3.3.1.min.js" type="text/javascript"></script>
     </head>
@@ -11,67 +19,65 @@
             <div style="width: 100%">
                 <img src="/static/images/docker-flask.png" width="100%">
                 <p>
+                    <p>L'applicazione è ospitata all'indirizzo IP http://35.242.237.255</p>
+                    <h3 id="studenti">Studenti</h3>
+                    <ul>
+                    <li>Luca Brena, matricola: 808216</li>
+                    <li>Federico Belotti, matricola: 808708</li>
+                    </ul>
+                    <h3 id="descrizione-progetto">Descrizione progetto</h3>
+                    <p>Il progetto consiste in un'applicazione web distribuita in cui, dato uno username, questa mostra quante volte tale username ha visitato la pagina. Vengono inoltre messe a disposizione delle semplici API per gestire le risorse.</p>
+                    <h3 id="tecnologie-utilizzate">Tecnologie utilizzate</h3>
+                    <ul>
+                    <li>Containerization: <a href="https://docker.com">Docker</a></li>
+                    <li>Provisioning: Kubernetes <a href="https://kubernetes.io">Kubernetes</a></li>
+                    <li>CI/CD: <a href="https://gitlab.com">GitLab</a></li>
+                    </ul>
+                    <h3 id="struttura-progetto">Struttura progetto</h3>
+                    <p class="center">
+                        
+                    <img src="/static/workflow.jpg" height="10%">
+                    </p>
 
-<p>L'applicazione è ospitata all'indirizzo IP http://35.242.237.255</p>
-<h3 id="studenti">Studenti</h3>
-<ul>
-<li>Luca Brena, matricola: 808216</li>
-<li>Federico Belotti, matricola: 808708</li>
-</ul>
-<h3 id="descrizione-progetto">Descrizione progetto</h3>
-<p>Il progetto consiste in un'applicazione web distribuita in cui, dato uno username, questa mostra quante volte tale username ha visitato la pagina. Vengono inoltre messe a disposizione delle semplici API per gestire le risorse.</p>
-<h3 id="tecnologie-utilizzate">Tecnologie utilizzate</h3>
-<ul>
-<li>Containerization: <a href="https://docker.com">Docker</a></li>
-<li>Provisioning: Kubernetes <a href="https://kubernetes.io">Kubernetes</a></li>
-<li>CI/CD: <a href="https://gitlab.com">GitLab</a></li>
-</ul>
-<h3 id="struttura-progetto">Struttura progetto</h3>
-<p align="center">
-    
-<img src="workflow/workflow.jpg" height="10%">
-</p>
-
-<p>L'applicazione è ospitata su un cluster Kubernetes in produzione su Google Cloud. Le richieste del client all'indirizzo IP http://35.242.237.255 vengono prese in carico da Ingress, il load balancer predefinito di Kubernetes, che si occupa di esporre i servizi offerti dal cluster al client. L'applicazione è costituita principalmente da quattro diversi componenti:</p>
-<ul>
-<li>Un proxy reverse NGINX</li>
-<li>Un web server UWSGI dove è ospitata una applicazione Flask</li>
-<li>Un web server UWSGI dove sono ospitate le API per la gestione delle risorse</li>
-<li>Un database Redis key-value</li>
-</ul>
-<p>Ingress inoltra la richiesta a NGINX, che la ridireziona al componente corretto. In particolare:</p>
-<ul>
-<li>Tutte le richieste del tipo /api/* verranno redirezionate al web server UWSGI su cui sono ospitate le API</li>
-<li>Tutte le richieste del tipo /(greetings|showall|...) verranno redirezionate al web server UWSGI su cui è ospitata la web app Flask</li>
-<li>Tutte le richieste di file statici (html, javascript, css, ...) vengono direttamente forniti da NGINX</li>
-<li>Tutte le richieste che non corrispondono a nesuna delle precedenti vengono gestite dall'Ingress default backend (40x, 50x, ...)</li>
-</ul>
-<p>Le informazioni inerenti agli utenti (username e #visite) vengono memorizzate all'interno di Redis, un database key-value che comunica direttamente ed esclusivamente con le API. Le API, oltre che essere raggiungibili dal client tramite NGINX, possono essere contattate direttamente dall'applicazione Flask senza passare dal proxy reverse, migliorando le prestazioni complessive.</p>
-<h3 id="repository-branch">Repository branch</h3>
-<p>Il repository è suddiviso in due differenti branch:</p>
-<ul>
-<li>Kubernetes: branch di deployment</li>
-<li>Development: branch di development</li>
-</ul>
-<h3 id="gitlab-cicd-pipeline">GitLab CI/CD pipeline</h3>
-<p>La pipeline di GitLab per il CI/CD è suddivisa in 5 stage:</p>
-<ul>
-<li>Build: viene testato il building delle immagini. Se lo stage ha successo viene eseguita la push delle immagini sul registry GitLab con il tag :$CI_COMMIT_SHA</li>
-<li>Test: vengono testate le API</li>
-<li>Push: le immagini dal tag :$CI_COMMIT_SHA vengono rinominate con il tag :test e salvate sul registry GitLab, ad indicare che hanno superato i test precedenti</li>
-<li>Release: le immagini vengono rinominate con il tag :latest e caricate sul registry</li>
-<li>Deploy: se tutti gli stage vengono eseguiti con successo le immagini dal tag :$CI_COMMIT_SHA vengono utilizzate per aggiornare i container in esecuzione sul cluster Kubernetes</li>
-</ul>
-<p>Dove $CI_COMMIT_SHA sta ad indicare il commit revision (<a href="https://docs.gitlab.com/ee/ci/variables/#predefined-variables-environment-variables">GitLab variables</a>).<br> Gli stage di Release e Deploy vengono eseguiti solo ed esclusivamente quando viene effettuata una commit o richiesta di un'operazione di merge sul branch Kubernetes.</p>
-<h3 id="sviluppi-futuri">Sviluppi futuri</h3>
-<p>I possibili sviluppi futuri sono:</p>
-<ul>
-<li>Gestire le richieste HTTPS</li>
-<li>Prevedere un vero e proprio processo di sign up/in mediante l'utilizzo di <a href="https://jwt.io/">JWT</a>, differenziando dunque gli utenti generici dagli utenti admin e le relative funzioni ad essi associate</li>
-<li>Provvedere a registare un dominio associato all'indirizzo IP dell'applicazione</li>
-</ul>
-
-                   <a href="/">Go back</a>
+                    <p>L'applicazione è ospitata su un cluster Kubernetes in produzione su Google Cloud. Le richieste del client all'indirizzo IP http://35.242.237.255 vengono prese in carico da Ingress, il load balancer predefinito di Kubernetes, che si occupa di esporre i servizi offerti dal cluster al client. L'applicazione è costituita principalmente da quattro diversi componenti:</p>
+                    <ul>
+                    <li>Un proxy reverse NGINX</li>
+                    <li>Un web server UWSGI dove è ospitata una applicazione Flask</li>
+                    <li>Un web server UWSGI dove sono ospitate le API per la gestione delle risorse</li>
+                    <li>Un database Redis key-value</li>
+                    </ul>
+                    <p>Ingress inoltra la richiesta a NGINX, che la ridireziona al componente corretto. In particolare:</p>
+                    <ul>
+                    <li>Tutte le richieste del tipo /api/* verranno redirezionate al web server UWSGI su cui sono ospitate le API</li>
+                    <li>Tutte le richieste del tipo /(greetings|showall|...) verranno redirezionate al web server UWSGI su cui è ospitata la web app Flask</li>
+                    <li>Tutte le richieste di file statici (html, javascript, css, ...) vengono direttamente forniti da NGINX</li>
+                    <li>Tutte le richieste che non corrispondono a nesuna delle precedenti vengono gestite dall'Ingress default backend (40x, 50x, ...)</li>
+                    </ul>
+                    <p>Le informazioni inerenti agli utenti (username e #visite) vengono memorizzate all'interno di Redis, un database key-value che comunica direttamente ed esclusivamente con le API. Le API, oltre che essere raggiungibili dal client tramite NGINX, possono essere contattate direttamente dall'applicazione Flask senza passare dal proxy reverse, migliorando le prestazioni complessive.</p>
+                    <h3 id="repository-branch">Repository branch</h3>
+                    <p>Il repository è suddiviso in due differenti branch:</p>
+                    <ul>
+                    <li>Kubernetes: branch di deployment</li>
+                    <li>Development: branch di development</li>
+                    </ul>
+                    <h3 id="gitlab-cicd-pipeline">GitLab CI/CD pipeline</h3>
+                    <p>La pipeline di GitLab per il CI/CD è suddivisa in 5 stage:</p>
+                    <ul>
+                    <li>Build: viene testato il building delle immagini. Se lo stage ha successo viene eseguita la push delle immagini sul registry GitLab con il tag :$CI_COMMIT_SHA</li>
+                    <li>Test: vengono testate le API</li>
+                    <li>Push: le immagini dal tag :$CI_COMMIT_SHA vengono rinominate con il tag :test e salvate sul registry GitLab, ad indicare che hanno superato i test precedenti</li>
+                    <li>Release: le immagini vengono rinominate con il tag :latest e caricate sul registry</li>
+                    <li>Deploy: se tutti gli stage vengono eseguiti con successo le immagini dal tag :$CI_COMMIT_SHA vengono utilizzate per aggiornare i container in esecuzione sul cluster Kubernetes</li>
+                    </ul>
+                    <p>Dove $CI_COMMIT_SHA sta ad indicare il commit revision (<a href="https://docs.gitlab.com/ee/ci/variables/#predefined-variables-environment-variables">GitLab variables</a>).<br> Gli stage di Release e Deploy vengono eseguiti solo ed esclusivamente quando viene effettuata una commit o richiesta di un'operazione di merge sul branch Kubernetes.</p>
+                    <h3 id="sviluppi-futuri">Sviluppi futuri</h3>
+                    <p>I possibili sviluppi futuri sono:</p>
+                    <ul>
+                    <li>Gestire le richieste HTTPS</li>
+                    <li>Prevedere un vero e proprio processo di sign up/in mediante l'utilizzo di <a href="https://jwt.io/">JWT</a>, differenziando dunque gli utenti generici dagli utenti admin e le relative funzioni ad essi associate</li>
+                    <li>Provvedere a registare un dominio associato all'indirizzo IP dell'applicazione</li>
+                    </ul>
+                    <a href="/">Go back</a>
                 </p>
             </div>
         </div>
