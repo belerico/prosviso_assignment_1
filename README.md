@@ -60,6 +60,7 @@ La pipeline di GitLab per il CI/CD è suddivisa in 5 stage:
 Dove $CI_COMMIT_SHA sta ad indicare il commit revision ([GitLab variables](https://docs.gitlab.com/ee/ci/variables/#predefined-variables-environment-variables)).
 <br>
 Gli stage di Release e Deploy vengono eseguiti solo ed esclusivamente quando viene effettuata una commit o richiesta di un'operazione di merge sul branch Kubernetes.
+<br>
 Tutte le immagini sono caricate sul registry di GitLab all'indirizzo https://gitlab.com/lucabrena/pss_assignment_1/container_registry.
 
 ### Sviluppi futuri
