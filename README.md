@@ -1,4 +1,4 @@
-L'applicazione è ospitata all'indirizzo IP http://35.242.237.255
+L'applicazione è ospitata all'indirizzo IP http://prosviso.duckdns.org/
 
 ### Studenti
 
