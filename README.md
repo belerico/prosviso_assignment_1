@@ -16,7 +16,7 @@ They are also made available to the simple API to manage resources.
 * Provisioning: Kubernetes [Kubernetes](https://kubernetes.io)
 * CI/CD: [GitLab](https://gitlab.com)
 
-### Struttura progetto
+### Project structure
 
 ![](nginx/html/static/images/workflow.png)
 
@@ -60,7 +60,7 @@ The GitLab pipeline for the CI / CD is divided into 5 stages:
 Where $ CI_COMMIT_SHA indicates the commit revision (GitLab variables).
 The Release and Deploy stages are executed only when a commit or request of a merge operation is performed on the Kubernetes branch.
 
-### Sviluppi futuri
+### Future developments
 
 Possible future developments are:
 
