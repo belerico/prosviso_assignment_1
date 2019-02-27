@@ -1,8 +1,8 @@
-# IMPORTANT
+## IMPORTANT
 The application was hosted on a production server on Google Clouds only for a short period of time, and due to the high Google prices we had to stop it.  
 Possible future development may consist in reorganizing code to work on a local kubernetes cluster, then providing step by step info on how install and use the webapp.
 
-### Application
+## Application
 
 The application is hosted at the IP address http://prosviso.duckdns.org/
 
