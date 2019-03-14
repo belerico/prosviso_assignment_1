@@ -57,13 +57,13 @@ The repository is divided into two different branches:
 
 The GitLab pipeline for the CI / CD is divided into 5 stages:
 
-* Build: the image building is tested. If the stage is successful, images are pushed to the GitLab registry with the tag: $ CI_COMMIT_SHA
+* Build: the image building is tested. If the stage is successful, images are pushed to the GitLab registry with the tag: $CI_COMMIT_SHA
 * Test: the APIs are tested
-* Push: images from the tag: $ CI_COMMIT_SHA are renamed with the tag: test and saved on the GitLab registry, indicating that they have passed the previous tests
+* Push: images from the tag: $CI_COMMIT_SHA are renamed with the tag: test and saved on the GitLab registry, indicating that they have passed the previous tests
 * Release: the images are renamed with the tag: latest and uploaded to the registry
-* Deploy: if all stages are successfully executed images from the tag: $ CI_COMMIT_SHA are used to update the containers running on the Kubernetes cluster
+* Deploy: if all stages are successfully executed images from the tag: $CI_COMMIT_SHA are used to update the containers running on the Kubernetes cluster
 
-Where $ CI_COMMIT_SHA indicates the commit revision (GitLab variables).
+Where $CI_COMMIT_SHA indicates the commit revision (GitLab variables).
 The Release and Deploy stages are executed only when a commit or request of a merge operation is performed on the Kubernetes branch.
 
 ### Future developments
